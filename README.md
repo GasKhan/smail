@@ -1,0 +1,2 @@
+# smail
+Simple email project
