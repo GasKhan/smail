@@ -1,0 +1,5 @@
+fa-icon.fancy ::ng-deep svg path {
+  fill: #f5921d;
+  stroke: #f5921d;
+  stroke-width: 10;
+}

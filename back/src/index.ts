@@ -1,13 +1,15 @@
 import express, { NextFunction, Request, Response } from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
+
 import { router as authRouter } from './auth/auth.routes';
 import { router as emailsRouter } from './emails/emails.routes';
 import { router as foldersRouter } from './folders/folders.routes';
-import { pool } from '../database';
 
 dotenv.config();
 
 const app = express();
+app.use(cors());
 app.use(express.json());
 
 const port = process.env.PORT || 3000;

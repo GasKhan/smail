@@ -1,0 +1,53 @@
+<header class="flex justify-between items-center dark:bg-slate-950 py-4">
+  <div
+    class="flex basis-1/2 mr-20 relative px-8 py-5 bg-sky-50 rounded-3xl focus-within:bg-slate-50 focus-within:shadow-md"
+  >
+    <button
+      (click)="onClick()"
+      class="rounded-full hover:bg-slate-100 active:bg-slate-200 mr-5 w-10 h-10"
+    >
+      <fa-icon [icon]="faSearch"></fa-icon>
+    </button>
+    <input
+      type="text"
+      id="search"
+      [formControl]="searchControl"
+      placeholder="Search in mails"
+      class="outline-none text-lg w-full bg-inherit mr-5"
+    />
+    @if (searchControl.value) {
+    <button
+      class="rounded-full bg-inherit hover:bg-slate-100 active:bg-slate-200 w-10 h-10"
+      (click)="clearSearchInput()"
+    >
+      <fa-icon [icon]="faX" class="text-gray-600"></fa-icon>
+    </button>
+    }
+  </div>
+  <div class="flex items-center">
+    <label
+      for="theme-checkbox"
+      class="flex justify-between relative items-center rounded-3xl border-2 border-gray-600 w-16 h-9 px-2 py-1 bg-slate-900"
+    >
+      <input
+        id="theme-checkbox"
+        type="checkbox"
+        class="peer hidden"
+        (change)="toggleTheme()"
+      />
+      <fa-icon [icon]="faMoon" class="text-2xl fancy"></fa-icon>
+      <fa-icon [icon]="faSun" class="text-2xl fancy"></fa-icon>
+      <span
+        class="absolute bg-slate-50 rounded-full h-8 w-8 top-0 left-0 peer-checked:translate-x-7 ease-in duration-100"
+      ></span>
+    </label>
+  </div>
+  <button
+    class="rounded-full border-2 border-gray-600 p-3 hover:bg-slate-100 active:bg-slate-200"
+  >
+    <fa-icon
+      [icon]="faUser"
+      class="flex text-2xl rounded-full text-gray-600"
+    ></fa-icon>
+  </button>
+</header>
