@@ -5,11 +5,19 @@ import { HttpClient } from '@angular/common/http';
 import { HeaderComponent } from './header/header.component';
 import { AsideNavComponent } from './aside-nav/aside-nav.component';
 import { MessagesListComponent } from './messages-list/messages-list.component';
+import { ShowMessageComponent } from './show-message/show-message.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, HeaderComponent, AsideNavComponent, MessagesListComponent],
+  imports: [
+    CommonModule,
+    RouterOutlet,
+    HeaderComponent,
+    AsideNavComponent,
+    MessagesListComponent,
+    ShowMessageComponent,
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
