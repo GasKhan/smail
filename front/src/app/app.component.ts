@@ -4,11 +4,12 @@ import { RouterOutlet } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { HeaderComponent } from './header/header.component';
 import { AsideNavComponent } from './aside-nav/aside-nav.component';
+import { MessagesListComponent } from './messages-list/messages-list.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, HeaderComponent, AsideNavComponent],
+  imports: [CommonModule, RouterOutlet, HeaderComponent, AsideNavComponent, MessagesListComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
