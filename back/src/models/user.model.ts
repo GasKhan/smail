@@ -7,7 +7,7 @@ export interface User {
 }
 
 export interface UserWithId extends User {
-  id: number;
+  user_id: number;
 }
 
 export interface UserRow extends RowDataPacket, UserWithId {}

@@ -6,6 +6,8 @@ import { HeaderComponent } from './header/header.component';
 import { AsideNavComponent } from './aside-nav/aside-nav.component';
 import { MessagesListComponent } from './messages-list/messages-list.component';
 import { ShowMessageComponent } from './show-message/show-message.component';
+import { LoginComponent } from './auth/login/login.component';
+import { SignupComponent } from './auth/signup/signup.component';
 
 @Component({
   selector: 'app-root',
@@ -17,6 +19,8 @@ import { ShowMessageComponent } from './show-message/show-message.component';
     AsideNavComponent,
     MessagesListComponent,
     ShowMessageComponent,
+    LoginComponent,
+    SignupComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

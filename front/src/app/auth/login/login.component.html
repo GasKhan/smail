@@ -1,0 +1,33 @@
+<div class="fixed h-full w-full bg-slate-400 top-0 left-0">
+  <form
+    class="relative top-1/2 left-1/2 p-16 bg-slate-100 flex flex-col w-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md items-center hover:shadow-2xl"
+    [formGroup]="loginForm"
+  >
+    <div class="flex w-full flex-col mb-3">
+      <label for="email" class="font-bold mb-1"> Email: </label>
+      <input
+        type="text"
+        id="email"
+        class="max-w-full px-2 py-1 rounded-md"
+        formControlName="email"
+      />
+    </div>
+    <div class="flex w-full flex-col mb-3">
+      <label for="password" class="font-bold mb-1"> Password: </label>
+      <input
+        type="password"
+        id="password"
+        class="max-w-full px-2 py-1 rounded-md"
+        formControlName="password"
+      />
+    </div>
+    <button
+      type="submit"
+      class="bg-slate-300 hover:bg-slate-400 px-10 py-2 border-slate-400 border-2 rounded-md cursor-pointer disabled:bg-slate-200 disabled:border-slate-50"
+      [disabled]="loginForm.invalid"
+      (click)="loginUser()"
+    >
+      Login
+    </button>
+  </form>
+</div>

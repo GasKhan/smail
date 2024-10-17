@@ -4,8 +4,7 @@ import { User, UserRow } from '../models/user.model';
 
 export const getUserByEmail = async (email: string) => {
   const res = await pool.query<UserRow[]>(
-    `SELECT * FROM users WHERE email=?`,
-    email
+    `SELECT * FROM users WHERE email  LIKE '%${email}%'`
   );
   return res[0];
 };
@@ -15,7 +14,7 @@ export const createNewUser = async (userData: User) => {
 
   await pool.query(
     ` INSERT INTO users (user_name, email, password)
-      VALUES ("?","?","?")`,
+      VALUES (?,?,?)`,
     [user_name, email, password]
   );
 
