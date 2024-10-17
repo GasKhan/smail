@@ -10,6 +10,7 @@ import {
   faRotateRight,
   faTrashCan,
 } from '@fortawesome/free-solid-svg-icons';
+import { MessagesApiService } from '../messagesApi.service';
 
 @Component({
   selector: 'app-messages-list',

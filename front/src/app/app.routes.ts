@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
-import { MessagesListComponent } from './messages-list/messages-list.component';
-import { ShowMessageComponent } from './show-message/show-message.component';
+import { MessagesListComponent } from './messages/messages-list/messages-list.component';
+import { ShowMessageComponent } from './messages/show-message/show-message.component';
 import { SignupComponent } from './auth/signup/signup.component';
 import { LoginComponent } from './auth/login/login.component';
 

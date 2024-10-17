@@ -6,7 +6,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { tap } from 'rxjs/operators';
-import { UserApiService } from '../../userApi.service';
+import { UserApiService } from '../userApi.service';
 
 @Component({
   selector: 'app-signup',

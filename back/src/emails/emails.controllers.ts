@@ -13,10 +13,13 @@ export const sendEmail = async (req: Request, res: Response) => {
 };
 
 export const getEmailsFromFolder = async (req: Request, res: Response) => {
-  const { folder_id } = req.body;
+  const { folder_id } = req.query;
+
   try {
-    const result = await getEmailsService(folder_id);
-    res.status(200).json(result);
+    if (folder_id) {
+      const result = await getEmailsService(+folder_id);
+      res.status(200).json(result);
+    }
   } catch (e) {
     console.error(e);
     res.status(400).send('Couldnt get messages');

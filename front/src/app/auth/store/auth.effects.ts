@@ -8,7 +8,7 @@ import {
   START_LOGIN,
 } from './auth.actions';
 import { catchError, exhaustMap, map, of, tap } from 'rxjs';
-import { UserApiService } from '../../userApi.service';
+import { UserApiService } from '../userApi.service';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
@@ -41,7 +41,7 @@ export class UserEffects {
       exhaustMap((userData) => {
         return this.userApiService.login(userData).pipe(
           tap(() => {
-            this.router.navigate(['/']);
+            this.router.navigate(['']);
           }),
           map((userResp) => login({ userData: userResp })),
 

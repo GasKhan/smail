@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserLogin, UserResp } from './models/user.model';
+import { UserLogin, UserResp } from '../models/user.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserApiService {
