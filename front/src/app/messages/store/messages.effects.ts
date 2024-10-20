@@ -17,7 +17,7 @@ export class MessagesEffects {
       exhaustMap(({ userId }) => {
         return this.messagesApiService.fetchFolders(userId).pipe(
           map((folders) => setFolders({ folders })),
-          tap((t) => console.log(t)),
+          // tap((t) => console.log(t)),
           catchError((err) => {
             console.error(err);
             return EMPTY;
@@ -32,7 +32,7 @@ export class MessagesEffects {
       ofType(FETCH_MESSAGES),
       exhaustMap((folderId) => {
         return this.messagesApiService.fetchMessagesFromFolder(folderId).pipe(
-          tap((t) => console.log(t)),
+          // tap((t) => console.log(t)),
           map((messages) => setMessages({ messages })),
           catchError((err) => {
             console.error(err);

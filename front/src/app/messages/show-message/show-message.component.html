@@ -1,7 +1,11 @@
+@if(( message$ | async)) {
+<div class=""></div>
+}
+
 <div class="flex">
-  <p class="font-bold">fafas kasfjsd fosadijfdsi</p>
+  <p class="font-bold">{{ (message$ | async)?.title }}</p>
   <div class="grow flex justify-end">
-    <span class="mr-3">12 jan 2021</span>
+    <span class="mr-3">{{ (message$ | async)?.sentAt }}</span>
     <button class="mr-3 rounded-full hover:bg-slate-300 w-7 h-7">
       <fa-icon [icon]="faStar"></fa-icon>
     </button>
@@ -14,5 +18,7 @@
   </div>
 </div>
 <div class="bg-slate-200 px-14 py-4">
-  <div class="bg-slate-50 mx-auto text-center">asdkgjdsaglkdsklg;aga;s</div>
+  <div class="bg-slate-50 mx-auto text-center">
+    {{ (message$ | async)?.textBody }}
+  </div>
 </div>

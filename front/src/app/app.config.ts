@@ -7,12 +7,13 @@ import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { UserEffects } from './auth/store/auth.effects';
 import { MessagesEffects } from './messages/store/messages.effects';
+import { appStore } from './store';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(),
-    provideStore(),
+    provideStore(appStore),
     provideEffects(UserEffects, MessagesEffects),
   ],
 };

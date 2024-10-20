@@ -2,13 +2,13 @@ import { Request, Response } from 'express';
 import { getEmailsService, sendEmailService } from './emails.services';
 
 export const sendEmail = async (req: Request, res: Response) => {
-  const { messageObj, recipientUserId } = req.body;
+  const { messageObj, recipientUserEmail } = req.body;
   try {
-    await sendEmailService(messageObj, recipientUserId);
-    res.status(200).send(`Message was succesfully sent`);
+    await sendEmailService(messageObj, recipientUserEmail);
+    res.status(200).send({ message: `Message was succesfully sent` });
   } catch (e) {
     console.error(e);
-    res.status(400).send('Could not send the message');
+    res.status(400).json({ message: 'Could not send the message' });
   }
 };
 

@@ -6,17 +6,25 @@
       <input type="checkbox" class="h-5 w-5 outline-slate-100 cursor-pointer" />
     </div>
     <fa-icon [icon]="faStar" class="mr-3"></fa-icon>
-    <div class="">sender</div>
+    <div class="">{{ message.senderId }}</div>
   </div>
-  <div class="min-w-0 flex items-center pr-10 max-w-80 basis-1/2 grow-0">
-    <span class="font-bold">title</span>
-    <span class="mx-2">-</span>
-    <span class="overflow-hidden text-ellipsis whitespace-nowrap block">
-      bodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybodybody
-      bodybody bodybodybodybodybody bodybodybody
-    </span>
+
+  <div class="min-w-0 flex items-center mr-7 max-w-80 basis-1/2 grow-0">
+    <a
+      [routerLink]="['/message', message.emailId]"
+      routerLinkActive="router-link-active"
+      class="w-full flex items-center"
+    >
+      <span class="font-bold">{{ message.title }}</span>
+      <span class="mx-2">-</span>
+      <span class="overflow-hidden text-ellipsis whitespace-nowrap block">
+        {{ message.textBody }}
+      </span>
+    </a>
   </div>
-  <span class="shrink-0 font-bold group-hover:hidden">12.09.2024</span>
+  <span class="shrink-0 font-bold group-hover:hidden">{{
+    message.sentAt
+  }}</span>
   <div class="hidden group-hover:block">
     <button class="mx-1 rounded-full hover:bg-slate-300 w-6 h-6">
       <fa-icon [icon]="faTrash" class=""></fa-icon>

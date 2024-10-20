@@ -3,7 +3,8 @@ export type Message = {
   title: string;
   textBody: string;
   senderId: number;
-  is_watched: boolean;
+  isWatched: boolean;
   isMarked: boolean;
   sentAt: Date;
+  folderId: number;
 };

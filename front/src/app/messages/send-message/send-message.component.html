@@ -1,0 +1,95 @@
+<div class="absolute top-0 bg-slate-500 h-full w-full overflow-y-auto">
+  <form
+    [formGroup]="messageForm"
+    class="bg-slate-100 flex-col px-3 py-1 my-1 rounded-md absolute top-auto left-1/2 -translate-x-1/2"
+    [ngClass]="{
+      'w-1/2': popupAppearance === APPEARANCE_OPTIONS.regular,
+      'w-2/3': popupAppearance === APPEARANCE_OPTIONS.wide,
+      'top-1/3': popupAppearance === APPEARANCE_OPTIONS.wide || popupAppearance === APPEARANCE_OPTIONS.regular,
+      'bottom-0': popupAppearance === APPEARANCE_OPTIONS.minimized,
+      'left-2/3': popupAppearance === APPEARANCE_OPTIONS.minimized,
+    }"
+  >
+    <div class="flex justify-between items-center mb-3">
+      <p class="font-semibold mr-10">New message</p>
+      <div class="flex items-center">
+        <button
+          type="button"
+          class="mr-2 hover:bg-slate-200"
+          (click)="resizePopup(APPEARANCE_OPTIONS.minimized)"
+        >
+          <fa-icon [icon]="faMinimize"></fa-icon>
+        </button>
+        <button
+          type="button"
+          class="mr-2 hover:bg-slate-200"
+          (click)="resizePopup(APPEARANCE_OPTIONS.wide)"
+        >
+          <fa-icon
+            [icon]="faResizeUp"
+            [ngClass]="{
+              hidden: popupAppearance !== APPEARANCE_OPTIONS.regular
+            }"
+          ></fa-icon>
+          <fa-icon
+            [icon]="faResizeDown"
+            [ngClass]="{
+              hidden: popupAppearance === APPEARANCE_OPTIONS.regular
+            }"
+          ></fa-icon>
+        </button>
+        <button
+          type="button"
+          class="hover:bg-slate-200"
+          (click)="closeSendMessage()"
+        >
+          <fa-icon [icon]="faClose"></fa-icon>
+        </button>
+      </div>
+    </div>
+    <div
+      class="flex flex-col grow"
+      [ngClass]="{ hidden: popupAppearance === APPEARANCE_OPTIONS.minimized }"
+    >
+      <input
+        type="text"
+        formControlName="sendTo"
+        id="to"
+        placeholder="To:"
+        class="bg-inherit py-1 border-b-2 outline-none"
+      />
+      @if (!messageForm.controls['sendTo'].valid &&
+      messageForm.controls['sendTo'].touched) {
+      <div class="text-red-600 text-sm">Please enter the reciever</div>
+      }
+      <input
+        type="text"
+        formControlName="title"
+        id="title"
+        placeholder="Title:"
+        class="bg-inherit py-1 border-b-2 mb-5 outline-none"
+      />
+      <app-message-editor
+        class=""
+        (onTextChanged)="editTextBody($event)"
+      ></app-message-editor>
+
+      @if (!messageForm.controls['body'].valid &&
+      messageForm.controls['body'].touched) {
+      <div class="text-red-600 text-sm">Please enter the text</div>
+      }
+    </div>
+    <div
+      class="flex justify-between mt-3"
+      [ngClass]="{ hidden: popupAppearance === APPEARANCE_OPTIONS.minimized }"
+    >
+      <button
+        class="bg-blue-700 disabled:bg-blue-400 text-white px-6 py-2 rounded-3xl hover:shadow-2xl shadow-blue-500/50"
+        [disabled]="!messageForm.valid"
+        (click)="sendMessage($event)"
+      >
+        Send
+      </button>
+    </div>
+  </form>
+</div>

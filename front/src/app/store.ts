@@ -5,12 +5,12 @@ import {
   MessagesState,
 } from './messages/store/messages.reducer';
 
-export interface Store {
+export interface StoreState {
   auth: AuthState;
   messages: MessagesState;
 }
 
-export const appStore: ActionReducerMap<Store> = {
+export const appStore: ActionReducerMap<StoreState> = {
   auth: authReducer,
   messages: messagesReducer,
 };

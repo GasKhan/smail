@@ -2,52 +2,68 @@
   <div class="flex items-center py-12 px-5">
     <button
       class="flex items-center justify-center-center px-7 py-5 bg-blue-200 min-w-48 text-lg rounded-lg hover:shadow-xl"
+      (click)="openSendMessage()"
     >
       <fa-icon [icon]="faPencil" class="ml-5"></fa-icon>
       <span class="w-full">Write</span>
     </button>
   </div>
+  <!-- <ul class="mr-7">
+  <li class="">
+    <a
+      [routerLink]="['/']"
+      class="flex w-full h-full py-3 pr-4 pl-10 text-md rounded-e-3xl hover:bg-slate-200"
+      routerLinkActive="bg-slate-500 hover:bg-slate-600 font-semibold "
+    >
+      <fa-icon [icon]="faEnvelope" class="mr-3"></fa-icon>
+      <span class="mr-auto">Recieved</span>
+      <span> 27 </span>
+    </a>
+  </li>
+  <li class="">
+    <a
+      [routerLink]="['/a']"
+      class="flex w-full h-full py-3 pr-4 pl-10 text-md rounded-e-3xl hover:bg-slate-200"
+      routerLinkActive="bg-slate-500 hover:bg-slate-600 font-semibold"
+    >
+      <fa-icon [icon]="faPaperPlane" class="mr-3"></fa-icon>
+      <span class="mr-auto">Sent</span><span>4</span>
+    </a>
+  </li>
+  <li class="">
+    <a
+      [routerLink]="['/b']"
+      class="flex w-full h-full py-3 pr-4 pl-10 text-md rounded-e-3xl hover:bg-slate-200"
+      routerLinkActive="bg-slate-500 hover:bg-slate-600 font-semibold"
+    >
+      <fa-icon [icon]="faExclamation" class="mr-3"></fa-icon>
+      <span class="mr-auto">Spam</span><span>77</span>
+    </a>
+  </li>
+  <li class="">
+    <a
+      [routerLink]="['/c']"
+      class="flex w-full h-full py-3 pr-4 pl-10 text-md rounded-e-3xl hover:bg-slate-200"
+      routerLinkActive="bg-slate-500 hover:bg-slate-600 font-semibold"
+    >
+      <fa-icon [icon]="faTrash" class="mr-3"></fa-icon>
+      <span class="mr-auto">Trash</span><span>9</span>
+    </a>
+  </li>
+  </ul> -->
   <ul class="mr-7">
+    @for (folder of folders | async; track folder) {
     <li class="">
       <a
-        [routerLink]="['/']"
+        [routerLink]="[folder.folderName]"
         class="flex w-full h-full py-3 pr-4 pl-10 text-md rounded-e-3xl hover:bg-slate-200"
         routerLinkActive="bg-slate-500 hover:bg-slate-600 font-semibold "
       >
         <fa-icon [icon]="faEnvelope" class="mr-3"></fa-icon>
-        <span class="mr-auto">Recieved</span>
-        <span> 27 </span>
+        <span class="mr-auto">{{ folder.folderName }}</span>
+        <span>?</span>
       </a>
     </li>
-    <li class="">
-      <a
-        [routerLink]="['/a']"
-        class="flex w-full h-full py-3 pr-4 pl-10 text-md rounded-e-3xl hover:bg-slate-200"
-        routerLinkActive="bg-slate-500 hover:bg-slate-600 font-semibold"
-      >
-        <fa-icon [icon]="faPaperPlane" class="mr-3"></fa-icon>
-        <span class="mr-auto">Sent</span><span>4</span>
-      </a>
-    </li>
-    <li class="">
-      <a
-        [routerLink]="['/b']"
-        class="flex w-full h-full py-3 pr-4 pl-10 text-md rounded-e-3xl hover:bg-slate-200"
-        routerLinkActive="bg-slate-500 hover:bg-slate-600 font-semibold"
-      >
-        <fa-icon [icon]="faExclamation" class="mr-3"></fa-icon>
-        <span class="mr-auto">Spam</span><span>77</span>
-      </a>
-    </li>
-    <li class="">
-      <a
-        [routerLink]="['/c']"
-        class="flex w-full h-full py-3 pr-4 pl-10 text-md rounded-e-3xl hover:bg-slate-200"
-        routerLinkActive="bg-slate-500 hover:bg-slate-600 font-semibold"
-      >
-        <fa-icon [icon]="faTrash" class="mr-3"></fa-icon>
-        <span class="mr-auto">Trash</span><span>9</span>
-      </a>
-    </li>
+    }
   </ul>
 </aside>

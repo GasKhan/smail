@@ -11,11 +11,14 @@ import {
   faTrashCan,
 } from '@fortawesome/free-solid-svg-icons';
 import { MessagesApiService } from '../messagesApi.service';
+import { Store } from '@ngrx/store';
+import { StoreState } from '../../store';
+import { AsyncPipe } from '@angular/common';
 
 @Component({
   selector: 'app-messages-list',
   standalone: true,
-  imports: [MessagesListItemComponent, FontAwesomeModule],
+  imports: [MessagesListItemComponent, FontAwesomeModule, AsyncPipe],
   templateUrl: './messages-list.component.html',
   styleUrl: './messages-list.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,4 +31,8 @@ export class MessagesListComponent {
   faRotateRight = faRotateRight;
   faArrowLeft = faArrowLeft;
   faArrowRight = faArrowRight;
+
+  messages = this.store.select((state) => state.messages.messages);
+
+  constructor(private store: Store<StoreState>) {}
 }
