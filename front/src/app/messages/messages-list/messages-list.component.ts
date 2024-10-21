@@ -10,10 +10,10 @@ import {
   faRotateRight,
   faTrashCan,
 } from '@fortawesome/free-solid-svg-icons';
-import { MessagesApiService } from '../messagesApi.service';
 import { Store } from '@ngrx/store';
 import { StoreState } from '../../store';
 import { AsyncPipe } from '@angular/common';
+import { selectFilteredMessages } from '../store/messages.selectors';
 
 @Component({
   selector: 'app-messages-list',
@@ -32,7 +32,7 @@ export class MessagesListComponent {
   faArrowLeft = faArrowLeft;
   faArrowRight = faArrowRight;
 
-  messages = this.store.select((state) => state.messages.messages);
+  messages = this.store.select(selectFilteredMessages);
 
   constructor(private store: Store<StoreState>) {}
 }

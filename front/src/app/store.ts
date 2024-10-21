@@ -1,4 +1,8 @@
-import { ActionReducerMap } from '@ngrx/store';
+import {
+  ActionReducerMap,
+  createFeatureSelector,
+  createSelector,
+} from '@ngrx/store';
 import { authReducer, AuthState } from './auth/store/auth.reducer';
 import {
   messagesReducer,
@@ -14,3 +18,6 @@ export const appStore: ActionReducerMap<StoreState> = {
   auth: authReducer,
   messages: messagesReducer,
 };
+
+export const selectMessagesState =
+  createFeatureSelector<MessagesState>('messages');

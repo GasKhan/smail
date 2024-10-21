@@ -5,10 +5,8 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { UserApiService } from '../userApi.service';
-import { tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { login, startLogin } from '../store/auth.actions';
+import { startLogin } from '../store/auth.actions';
 
 @Component({
   selector: 'app-login',

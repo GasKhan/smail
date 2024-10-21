@@ -11,8 +11,6 @@ import {
 import { Store } from '@ngrx/store';
 import { StoreState } from '../store';
 import { AsyncPipe } from '@angular/common';
-import { Observable, of } from 'rxjs';
-import { Folder } from '../models/folder.model';
 import { SendMessageToggleService } from '../sendMessage-toggle.service';
 
 @Component({

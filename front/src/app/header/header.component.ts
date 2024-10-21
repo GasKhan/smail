@@ -10,6 +10,9 @@ import {
 import { ThemeToggleService } from '../theme-toggle.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { AsyncPipe } from '@angular/common';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Store } from '@ngrx/store';
+import { changeSearchSubstr } from '../messages/store/messages.actions';
 
 @Component({
   selector: 'app-header',
@@ -17,7 +20,7 @@ import { AsyncPipe } from '@angular/common';
   imports: [ReactiveFormsModule, FontAwesomeModule, AsyncPipe],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
-  // changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent {
   faSearch = faMagnifyingGlass;
@@ -40,5 +43,16 @@ export class HeaderComponent {
     this.searchControl.setValue('');
   }
 
-  constructor(private themeToggleService: ThemeToggleService) {}
+  constructor(
+    private themeToggleService: ThemeToggleService,
+    private store: Store
+  ) {
+    this.searchControl.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe((substr) => {
+        this.store.dispatch(
+          changeSearchSubstr({ newSearchSubstr: substr || '' })
+        );
+      });
+  }
 }
