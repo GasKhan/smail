@@ -12,6 +12,7 @@ import { fetchFolders, fetchMessages } from './messages/store/messages.actions';
 import { SendMessageComponent } from './messages/send-message/send-message.component';
 import { SendMessageToggleService } from './sendMessage-toggle.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { AddFileComponent } from './messages/add-file/add-file.component';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
     LoginComponent,
     SignupComponent,
     SendMessageComponent,
+    AddFileComponent
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',

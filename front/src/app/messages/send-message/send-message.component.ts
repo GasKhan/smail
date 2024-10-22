@@ -4,19 +4,20 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faClose,
   faDownLeftAndUpRightToCenter,
-  faTrash,
   faUpRightAndDownLeftFromCenter,
   faWindowMinimize,
 } from '@fortawesome/free-solid-svg-icons';
 import { SendMessageToggleService } from '../../sendMessage-toggle.service';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
 import { MessageEditorComponent } from '../message-editor/message-editor.component';
 import { MessagesApiService } from '../messagesApi.service';
+import { AddFileComponent } from '../add-file/add-file.component';
 
 enum APPEARANCE_OPTIONS {
   regular,
@@ -32,6 +33,7 @@ enum APPEARANCE_OPTIONS {
     NgClass,
     ReactiveFormsModule,
     MessageEditorComponent,
+    AddFileComponent,
   ],
   templateUrl: './send-message.component.html',
   styleUrl: './send-message.component.css',
@@ -52,6 +54,7 @@ export class SendMessageComponent implements OnInit {
       sendTo: ['', Validators.required],
       title: '',
       body: ['', Validators.required],
+      file: new FormControl<File | null>(null),
     });
   }
 
@@ -76,6 +79,11 @@ export class SendMessageComponent implements OnInit {
       this.messageForm.controls['body'].markAsTouched();
 
     this.messageForm.get('body')?.setValue(editedText);
+  }
+
+  addFile(file: File) {
+    this.messageForm.controls['file'].setValue(file);
+    console.log(this.messageForm.controls['file'].value);
   }
 
   constructor(

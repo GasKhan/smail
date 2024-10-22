@@ -1,0 +1,17 @@
+<div class="flex items-center px-3 py-1">
+  <input type="file" class="hidden" #fInput (change)="addFile($event)" />
+  <button
+    class="bg-blue-700 px-5 py-2 rounded-md text-slate-100 mr-3"
+    (click)="fInput.click()"
+  >
+    <!-- <span class="mr-2">Add file</span> -->
+    <fa-icon [icon]="faPaperclip"></fa-icon>
+  </button>
+  @if (file) {
+  <ul class="mr-3 list-disc pl-5">
+    <li class="">{{ file.name }}</li>
+    <li class="">{{ file.type }}</li>
+    <li class="">{{ file.size }} bytes</li>
+  </ul>
+  }
+</div>
