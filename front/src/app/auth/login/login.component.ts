@@ -7,17 +7,21 @@ import {
 } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { startLogin } from '../store/auth.actions';
+import { Router, RouterLink } from '@angular/router';
+import { faX } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink, FontAwesomeModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
+  faX = faX;
 
   ngOnInit(): void {
     this.loginForm = this.fb.group({
@@ -44,5 +48,14 @@ export class LoginComponent implements OnInit {
         })
       );
   }
-  constructor(private fb: FormBuilder, private store: Store) {}
+
+  closeLoginPage() {
+    this.router.navigate(['/']);
+  }
+
+  constructor(
+    private fb: FormBuilder,
+    private store: Store,
+    private router: Router
+  ) {}
 }

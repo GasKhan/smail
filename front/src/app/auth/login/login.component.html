@@ -29,5 +29,17 @@
     >
       Login
     </button>
+    <a
+      [routerLink]="['/signup']"
+      routerLinkActive="router-link-active"
+      class="underline"
+      >Don't have account? Sign up</a
+    >
+    <button
+      class="absolute top-1 right-3 p-3 hover:bg-slate-300 rounded-md"
+      (click)="closeLoginPage()"
+    >
+      <fa-icon [icon]="faX"></fa-icon>
+    </button>
   </form>
 </div>

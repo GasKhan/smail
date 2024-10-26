@@ -1,1 +1,3 @@
-
+fa-icon.marked ::ng-deep svg path {
+  fill: gold;
+}

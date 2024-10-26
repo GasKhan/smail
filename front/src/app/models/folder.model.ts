@@ -1,5 +1,7 @@
+import { Folders } from './folder-names';
+
 export type Folder = {
   folderId: number;
-  userId: number;
-  folderName: string;
+  folderName: Folders;
+  totalMessages: number;
 };

@@ -1,13 +1,12 @@
 <header class="flex justify-between items-center dark:bg-slate-950 py-4">
   <div
-    class="flex basis-1/2 grow mr-2 relative px-8 py-5 bg-sky-50 rounded-3xl focus-within:bg-slate-50 focus-within:shadow-md"
+    class="flex basis-1/2 grow mr-2 relative border-2 border-slate-200 px-8 py-2 bg-sky-50 rounded-3xl focus-within:bg-slate-50 focus-within:shadow-md"
   >
-    <button
-      (click)="onClick()"
-      class="rounded-full hover:bg-slate-100 active:bg-slate-200 mr-5 w-10 h-10"
+    <div
+      class="flex items-center justify-center rounded-full hover:bg-slate-100 active:bg-slate-200 mr-5 w-10 h-10"
     >
       <fa-icon [icon]="faSearch"></fa-icon>
-    </button>
+    </div>
     <input
       type="text"
       id="search"
@@ -42,12 +41,26 @@
       ></span>
     </label>
   </div>
-  <button
+
+  @if (!(user | async)) {
+  <a
+    [routerLink]="['/login']"
     class="rounded-full border-2 border-gray-600 p-3 hover:bg-slate-100 active:bg-slate-200"
   >
     <fa-icon
       [icon]="faUser"
       class="flex text-2xl rounded-full text-gray-600"
     ></fa-icon>
+  </a>
+  }@else {
+  <button
+    class="rounded-full border-2 border-gray-600 p-3 hover:bg-slate-100 active:bg-slate-200"
+    (click)="logout()"
+  >
+    <fa-icon
+      [icon]="faArrowRightFromBracket"
+      class="flex text-xl rounded-full text-gray-600"
+    ></fa-icon>
   </button>
+  }
 </header>

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
+  faArrowRightFromBracket,
   faMagnifyingGlass,
   faMoon,
   faSun,
@@ -13,11 +14,13 @@ import { AsyncPipe } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { changeSearchSubstr } from '../messages/store/messages.actions';
+import { RouterLink } from '@angular/router';
+import { StoreState } from '../store';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [ReactiveFormsModule, FontAwesomeModule, AsyncPipe],
+  imports: [ReactiveFormsModule, FontAwesomeModule, AsyncPipe, RouterLink],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -28,7 +31,9 @@ export class HeaderComponent {
   faSun = faSun;
   faMoon = faMoon;
   faX = faX;
+  faArrowRightFromBracket = faArrowRightFromBracket;
 
+  user = this.store.select((state) => state.auth.user);
   searchControl = new FormControl('');
 
   toggleTheme() {
@@ -43,9 +48,13 @@ export class HeaderComponent {
     this.searchControl.setValue('');
   }
 
+  logout() {
+    console.log('logging out');
+  }
+
   constructor(
     private themeToggleService: ThemeToggleService,
-    private store: Store
+    private store: Store<StoreState>
   ) {
     this.searchControl.valueChanges
       .pipe(takeUntilDestroyed())

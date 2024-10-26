@@ -1,36 +1,63 @@
 <div
-  class="group flex p-5 items-center hover:shadow-[inset_0_-2px_0_0_rgba(100,121,143,0.12)] cursor-pointer ease-in duration-100 bg-slate-50 border-t-2"
+  class="group flex w-full p-5 items-center hover:shadow-[inset_0_-2px_0_0_rgba(100,121,143,0.12)] cursor-pointer ease-in duration-100 bg-slate-50 border-t-2 rounded-sm"
+  [ngClass]="{ 'bg-slate-700': message.isWatched }"
 >
+  <!-- <div>{{ time }}</div> -->
   <div class="flex w-1/6 shrink-0 items-center mr-14">
     <div class="flex items-center justify-center mr-3">
       <input type="checkbox" class="h-5 w-5 outline-slate-100 cursor-pointer" />
     </div>
-    <fa-icon [icon]="faStar" class="mr-3"></fa-icon>
-    <div class="">{{ message.senderId }}</div>
+    @if (!isInTrash) {
+    <button class="mr-3" (click)="flagAsMarked()">
+      <fa-icon
+        [icon]="faStar"
+        [ngClass]="{ marked: message.isMarked }"
+      ></fa-icon>
+    </button>
+    }
+    <div class="overflow-hidden text-ellipsis mr-1 whitespace-nowrap">
+      {{ message.senderId }}
+    </div>
   </div>
 
-  <div class="min-w-0 flex items-center mr-7 max-w-80 basis-1/2 grow-0">
+  <div class="min-w-0 flex items-center max-w-fit mr-7 basis-1/2 grow">
     <a
       [routerLink]="['/message', message.emailId]"
       routerLinkActive="router-link-active"
       class="w-full flex items-center"
     >
-      <span class="font-bold">{{ message.title }}</span>
+      <span
+        class="font-bold overflow-hidden text-ellipsis mr-1 whitespace-nowrap"
+        >{{ message.title }}</span
+      >
       <span class="mx-2">-</span>
-      <span class="overflow-hidden text-ellipsis whitespace-nowrap block">
+      <span class="overflow-hidden text-ellipsis whitespace-nowrap">
         {{ message.textBody }}
       </span>
     </a>
   </div>
-  <span class="shrink-0 font-bold group-hover:hidden">{{
-    message.sentAt
-  }}</span>
-  <div class="hidden group-hover:block">
-    <button class="mx-1 rounded-full hover:bg-slate-300 w-6 h-6">
+  <div class="shrink-0 self-end font-bold ml-auto group-hover:hidden">
+    <span class="text-sm"
+      >{{ time.getDay() }}.{{ time.getMonth() }}.{{ time.getFullYear() }}</span
+    >
+  </div>
+  <div class="hidden group-hover:block ml-auto">
+    <button
+      class="mx-1 rounded-full hover:bg-slate-300 w-6 h-6 disabled:bg-transparent disabled:text-gray-300"
+      (click)="moveToTrash()"
+      [disabled]="isInTrash"
+    >
       <fa-icon [icon]="faTrash" class=""></fa-icon>
     </button>
-    <button class="mx-1 rounded-full hover:bg-slate-300 w-6 h-6">
+    <button
+      class="mx-1 rounded-full hover:bg-slate-300 w-6 h-6"
+      (click)="flagAsWatched()"
+    >
+      @if (message.isWatched) {
+      <fa-icon [icon]="faEnvelope"></fa-icon>
+      } @else {
       <fa-icon [icon]="faEnvelopeOpen"></fa-icon>
+      }
     </button>
   </div>
 </div>

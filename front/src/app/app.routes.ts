@@ -6,7 +6,11 @@ import { LoginComponent } from './auth/login/login.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 
 export const routes: Routes = [
-  { path: '', component: MessagesListComponent },
+  { path: '', redirectTo: 'recieved', pathMatch: 'full' },
+  { path: 'recieved', component: MessagesListComponent },
+  { path: 'sent', component: MessagesListComponent },
+  { path: 'spam', component: MessagesListComponent },
+  { path: 'trashfolder', component: MessagesListComponent },
   { path: 'message/:id', component: ShowMessageComponent },
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },

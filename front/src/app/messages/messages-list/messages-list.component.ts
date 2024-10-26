@@ -12,13 +12,23 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngrx/store';
 import { StoreState } from '../../store';
-import { AsyncPipe } from '@angular/common';
-import { selectFilteredMessages } from '../store/messages.selectors';
+import { AsyncPipe, NgClass } from '@angular/common';
+import {
+  selectFilteredMessages,
+  selectTrashFolderId,
+} from '../store/messages.selectors';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+  changeIsMessageMarked,
+  changeIsMessageWatched,
+  moveToFolder,
+} from '../store/messages.actions';
+import { Message } from '../../models/message.model';
 
 @Component({
   selector: 'app-messages-list',
   standalone: true,
-  imports: [MessagesListItemComponent, FontAwesomeModule, AsyncPipe],
+  imports: [MessagesListItemComponent, FontAwesomeModule, AsyncPipe, NgClass],
   templateUrl: './messages-list.component.html',
   styleUrl: './messages-list.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -32,7 +42,47 @@ export class MessagesListComponent {
   faArrowLeft = faArrowLeft;
   faArrowRight = faArrowRight;
 
+  isCheckDropdownShown = false;
   messages = this.store.select(selectFilteredMessages);
+  trashFolderId!: number;
 
-  constructor(private store: Store<StoreState>) {}
+  moveToTrashFolder(message: Message) {
+    this.store.dispatch(
+      moveToFolder({
+        emailFromFolderId: message.emailFromFolderId,
+        folderId: this.trashFolderId,
+      })
+    );
+  }
+
+  flagEmailAsWatched(emailId: number, isWatchedTo: boolean) {
+    this.store.dispatch(
+      changeIsMessageWatched({
+        messageId: emailId,
+        changeIsWatchedTo: isWatchedTo,
+      })
+    );
+  }
+
+  flagEmailAsMarked(emailId: number, isMarkedTo: boolean) {
+    this.store.dispatch(
+      changeIsMessageMarked({
+        messageId: emailId,
+        isMarkedTo: isMarkedTo,
+      })
+    );
+  }
+
+  toggleCheckDropdown() {
+    this.isCheckDropdownShown = !this.isCheckDropdownShown;
+  }
+
+  constructor(private store: Store<StoreState>) {
+    this.store
+      .select(selectTrashFolderId)
+      .pipe(takeUntilDestroyed())
+      .subscribe((id) => {
+        this.trashFolderId = id as number;
+      });
+  }
 }

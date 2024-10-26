@@ -7,17 +7,21 @@ import {
 } from '@angular/forms';
 import { tap } from 'rxjs/operators';
 import { UserApiService } from '../userApi.service';
+import { Router, RouterLink } from '@angular/router';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { faX } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-signup',
   standalone: true,
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, RouterLink, FontAwesomeModule],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignupComponent implements OnInit {
   signupForm!: FormGroup;
+  faX = faX;
 
   ngOnInit(): void {
     this.signupForm = this.fb.group({
@@ -56,8 +60,13 @@ export class SignupComponent implements OnInit {
     }
   }
 
+  closeSignupPage() {
+    this.router.navigate(['/']);
+  }
+
   constructor(
     private fb: FormBuilder,
-    private userApiService: UserApiService
+    private userApiService: UserApiService,
+    private router: Router
   ) {}
 }

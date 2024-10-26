@@ -28,7 +28,7 @@ import { AddFileComponent } from './messages/add-file/add-file.component';
     LoginComponent,
     SignupComponent,
     SendMessageComponent,
-    AddFileComponent
+    AddFileComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
@@ -40,9 +40,6 @@ export class AppComponent {
     private store: Store,
     private toggleSendMessageService: SendMessageToggleService
   ) {
-    this.store.dispatch(fetchFolders({ userId: 36 }));
-    this.store.dispatch(fetchMessages({ folderId: 50 }));
-
     this.toggleSendMessageService.currentIsOpened
       .pipe(takeUntilDestroyed())
       .subscribe((isOpen) => {

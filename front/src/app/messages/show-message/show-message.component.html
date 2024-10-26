@@ -5,7 +5,8 @@
 <div class="flex">
   <p class="font-bold">{{ (message$ | async)?.title }}</p>
   <div class="grow flex justify-end">
-    <span class="mr-3">{{ (message$ | async)?.sentAt }}</span>
+    <div class=""></div>
+    <span class="mr-3">{{ getFormattedDate((message$ | async)?.sentAt) }}</span>
     <button class="mr-3 rounded-full hover:bg-slate-300 w-7 h-7">
       <fa-icon [icon]="faStar"></fa-icon>
     </button>
@@ -18,7 +19,11 @@
   </div>
 </div>
 <div class="bg-slate-200 px-14 py-4">
-  <div class="bg-slate-50 mx-auto text-center">
+  <!-- <div class="bg-slate-50 mx-auto text-center">
     {{ (message$ | async)?.textBody }}
-  </div>
+  </div> -->
+  <div
+    class="bg-slate-50 mx-auto text-center"
+    [innerHTML]="(message$ | async)?.textBody"
+  ></div>
 </div>

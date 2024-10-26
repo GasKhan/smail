@@ -2,23 +2,25 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
   login,
   loginFailed,
-  SIGNUP,
+  START_SIGNUP,
   signUpFailed,
   signUpSuccess,
   START_LOGIN,
+  LOGIN_SUCCESS,
 } from './auth.actions';
 import { catchError, exhaustMap, map, of, tap } from 'rxjs';
 import { UserApiService } from '../userApi.service';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { Injectable } from '@angular/core';
+import { fetchFolders } from '../../messages/store/messages.actions';
 
 @Injectable()
 export class UserEffects {
-  signUp = createEffect(
+  signUp$ = createEffect(
     () =>
       this.actions$.pipe(
-        ofType(SIGNUP),
+        ofType(START_SIGNUP),
         exhaustMap((userData) => {
           return this.userApiService.signup(userData).pipe(
             tap(() => {
@@ -51,6 +53,14 @@ export class UserEffects {
           })
         );
       })
+    )
+  );
+
+  fetchFolders$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(login),
+      // tap(() => console.log('Fetching folders!!!')),
+      map(({ userData }) => fetchFolders({ userId: userData.id }))
     )
   );
 

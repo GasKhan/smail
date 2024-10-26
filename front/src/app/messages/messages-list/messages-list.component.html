@@ -6,15 +6,22 @@
       id=""
       class="h-5 w-5 mr-1 cursor-pointer hover:bg-slate-300"
     />
-    <button class="rounded-md hover:bg-slate-300">
+    <button
+      class="rounded-md hover:bg-slate-300"
+      (click)="toggleCheckDropdown()"
+    >
       <fa-icon [icon]="faAngleDown"></fa-icon>
     </button>
     <ul
-      class="hidden absolute bg-slate-50 shadow-2xl top-6 left-0 justify-center py-2"
+      class="absolute bg-slate-50 shadow-2xl top-6 left-0 justify-center py-2 text-slate-600"
+      [ngClass]="{ hidden: !isCheckDropdownShown }"
     >
-      <li class="px-10 hover:bg-slate-200 cursor-pointer">aaaaaaaaa</li>
-      <li class="px-10 hover:bg-slate-200 cursor-pointer">aaaaaaaaa</li>
-      <li class="px-10 hover:bg-slate-200 cursor-pointer">aaaaaaaaa</li>
+      <li class="px-10 hover:bg-slate-200 cursor-pointer">All</li>
+      <li class="px-10 hover:bg-slate-200 cursor-pointer">No one</li>
+      <li class="px-10 hover:bg-slate-200 cursor-pointer">Watched</li>
+      <li class="px-10 hover:bg-slate-200 cursor-pointer">Unwatched</li>
+      <li class="px-10 hover:bg-slate-200 cursor-pointer">Marked</li>
+      <li class="px-10 hover:bg-slate-200 cursor-pointer">Not marked</li>
     </ul>
   </div>
   <div class="mx-5">
@@ -33,22 +40,13 @@
       <fa-icon [icon]="faFolderOpen" class=""></fa-icon>
     </button>
   </div>
-  <div class="self-end">
-    <div class="flex">
-      <div class="mr-4">
-        <span>1-30</span>
-        <span class="mx-2">from</span>
-        <span>30</span>
-      </div>
-      <button class="mr-2">
-        <fa-icon [icon]="faArrowLeft"></fa-icon>
-      </button>
-      <button>
-        <fa-icon [icon]="faArrowRight"></fa-icon>
-      </button>
-    </div>
-  </div>
 </div>
 @for ( message of messages | async; track message) {
-<app-messages-list-item [message]="message"></app-messages-list-item>
+<app-messages-list-item
+  [message]="message"
+  [isInTrash]="trashFolderId === message.folderId"
+  (onMoveToTrash)="moveToTrashFolder(message)"
+  (onFlagAsWatched)="flagEmailAsWatched(message.emailId, $event)"
+  (onFlagAsMarked)="flagEmailAsMarked(message.emailId, $event)"
+></app-messages-list-item>
 }

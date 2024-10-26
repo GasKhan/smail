@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { faReply, faReplyAll, faStar } from '@fortawesome/free-solid-svg-icons';
 import { Message } from '../../models/message.model';
@@ -10,6 +9,8 @@ import { StoreState } from '../../store';
 import { tap } from 'rxjs/internal/operators/tap';
 import { AsyncPipe } from '@angular/common';
 import { Observable } from 'rxjs';
+import { changeIsMessageWatched } from '../store/messages.actions';
+import { getFormattedDate } from '../../../helpers/getFormattedDate';
 
 @Component({
   selector: 'app-show-message',
@@ -25,12 +26,13 @@ export class ShowMessageComponent {
   faReplyAll = faReplyAll;
   message$!: Observable<Message | undefined>;
 
+  getFormattedDate = getFormattedDate;
+
   constructor(
     private activatedRoute: ActivatedRoute,
     private store: Store<StoreState>
   ) {
     this.message$ = activatedRoute.params.pipe(
-      takeUntilDestroyed(),
       switchMap((params) => {
         const id = +params['id'];
         return this.store.select((state) =>
@@ -38,6 +40,16 @@ export class ShowMessageComponent {
             return mes.emailId === id;
           })
         );
+      }),
+      tap((message) => {
+        // console.log('dispatching change wathced');
+        if (message && !message.isWatched)
+          this.store.dispatch(
+            changeIsMessageWatched({
+              messageId: message.emailId,
+              changeIsWatchedTo: true,
+            })
+          );
       })
     );
   }

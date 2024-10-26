@@ -18,11 +18,21 @@ import {
 import { MessageEditorComponent } from '../message-editor/message-editor.component';
 import { MessagesApiService } from '../messagesApi.service';
 import { AddFileComponent } from '../add-file/add-file.component';
+import { MessageToSend } from '../../models/message.model';
+import { Store } from '@ngrx/store';
+import { sendMessage } from '../store/messages.actions';
 
 enum APPEARANCE_OPTIONS {
   regular,
   wide,
   minimized,
+}
+
+interface MessageForm {
+  sendTo: string;
+  title: string;
+  body: string;
+  file: File | null;
 }
 
 @Component({
@@ -50,11 +60,17 @@ export class SendMessageComponent implements OnInit {
   faResizeDown = faDownLeftAndUpRightToCenter;
 
   ngOnInit(): void {
-    this.messageForm = this.fb.group({
-      sendTo: ['', Validators.required],
+    const initialFormValues: MessageForm = {
+      sendTo: '',
       title: '',
-      body: ['', Validators.required],
-      file: new FormControl<File | null>(null),
+      body: '',
+      file: null,
+    };
+    this.messageForm = this.fb.group({
+      sendTo: [initialFormValues.sendTo, Validators.required],
+      title: initialFormValues.title,
+      body: [initialFormValues.body, Validators.required],
+      file: initialFormValues.file,
     });
   }
 
@@ -70,7 +86,12 @@ export class SendMessageComponent implements OnInit {
 
   sendMessage(event: Event) {
     event.preventDefault();
-    // this.messageApiService.sendMessage();
+    const emailData: MessageToSend = {
+      title: this.messageForm.get('title')?.value,
+      textBody: this.messageForm.get('body')?.value,
+      recipientEmail: this.messageForm.get('sendTo')?.value,
+    };
+    this.store.dispatch(sendMessage({ messageData: emailData }));
     this.toggleSendMessageService.closeSendMessage();
   }
 
@@ -89,6 +110,6 @@ export class SendMessageComponent implements OnInit {
   constructor(
     private toggleSendMessageService: SendMessageToggleService,
     private fb: FormBuilder,
-    private messageApiService: MessagesApiService
+    private store: Store
   ) {}
 }

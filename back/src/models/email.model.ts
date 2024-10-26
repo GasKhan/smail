@@ -6,3 +6,11 @@ export interface Email {
   is_watched: boolean;
   is_marked: boolean;
 }
+
+export interface EmailToSend {
+  recipientEmail: string;
+  senderId: number;
+  title: string;
+  textBody: string;
+  sentAt: Date;
+}
