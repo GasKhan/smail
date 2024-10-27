@@ -1,5 +1,6 @@
 import Router, { Request, Response } from 'express';
 import {
+  deleteEmails,
   flagAsMarked,
   flagAsWatched,
   getEmailsFromFolder,
@@ -12,6 +13,8 @@ export const router = Router();
 router.post('/', sendEmail);
 
 router.get('/', getEmailsFromFolder);
+
+router.delete('/', deleteEmails);
 
 router.patch('/toFolder', moveEmailToFolder);
 

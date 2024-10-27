@@ -5,51 +5,60 @@ import {
   faAngleDown,
   faArrowLeft,
   faArrowRight,
+  faEnvelopeCircleCheck,
   faEnvelopeOpen,
+  faExclamation,
   faFolderOpen,
   faRotateRight,
+  faStar,
   faTrashCan,
 } from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngrx/store';
 import { StoreState } from '../../store';
 import { AsyncPipe, NgClass } from '@angular/common';
 import {
+  selectCheckedMessages,
   selectFilteredMessages,
+  selectSpamFolderId,
   selectTrashFolderId,
 } from '../store/messages.selectors';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
+  changeIsMessageChecked,
   changeIsMessageMarked,
   changeIsMessageWatched,
+  checkAllMessages,
+  checkMessagesByField,
+  fetchMessages,
   moveToFolder,
+  uncheckAllMessages,
 } from '../store/messages.actions';
 import { Message } from '../../models/message.model';
+import { MessageControlComponent } from '../message-control/message-control.component';
 
 @Component({
   selector: 'app-messages-list',
   standalone: true,
-  imports: [MessagesListItemComponent, FontAwesomeModule, AsyncPipe, NgClass],
+  imports: [
+    MessagesListItemComponent,
+    FontAwesomeModule,
+    AsyncPipe,
+    NgClass,
+    MessageControlComponent,
+  ],
   templateUrl: './messages-list.component.html',
   styleUrl: './messages-list.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MessagesListComponent {
-  faTrashCan = faTrashCan;
-  faEnvelopeOpen = faEnvelopeOpen;
-  faFolderOpen = faFolderOpen;
-  faAngleDown = faAngleDown;
-  faRotateRight = faRotateRight;
-  faArrowLeft = faArrowLeft;
-  faArrowRight = faArrowRight;
-
-  isCheckDropdownShown = false;
-  messages = this.store.select(selectFilteredMessages);
   trashFolderId!: number;
+
+  messages = this.store.select(selectFilteredMessages);
 
   moveToTrashFolder(message: Message) {
     this.store.dispatch(
       moveToFolder({
-        emailFromFolderId: message.emailFromFolderId,
+        emailFromFolderIds: [message.emailFromFolderId],
         folderId: this.trashFolderId,
       })
     );
@@ -58,7 +67,7 @@ export class MessagesListComponent {
   flagEmailAsWatched(emailId: number, isWatchedTo: boolean) {
     this.store.dispatch(
       changeIsMessageWatched({
-        messageId: emailId,
+        messageIds: [emailId],
         changeIsWatchedTo: isWatchedTo,
       })
     );
@@ -67,14 +76,19 @@ export class MessagesListComponent {
   flagEmailAsMarked(emailId: number, isMarkedTo: boolean) {
     this.store.dispatch(
       changeIsMessageMarked({
-        messageId: emailId,
+        messageIds: [emailId],
         isMarkedTo: isMarkedTo,
       })
     );
   }
 
-  toggleCheckDropdown() {
-    this.isCheckDropdownShown = !this.isCheckDropdownShown;
+  flagEmailAsChecked(emailId: number, isCheckedTo: boolean) {
+    this.store.dispatch(
+      changeIsMessageChecked({
+        messageId: emailId,
+        isCheckedTo: isCheckedTo,
+      })
+    );
   }
 
   constructor(private store: Store<StoreState>) {

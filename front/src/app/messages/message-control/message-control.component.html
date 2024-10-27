@@ -1,0 +1,113 @@
+<div class="flex items-center mb-10">
+  <div class="flex items-center relative">
+    <input
+      type="checkbox"
+      name=""
+      id=""
+      class="h-5 w-5 mr-1 cursor-pointer hover:bg-slate-300"
+      [checked]="checkedMessageFromFolderIds.length"
+      (change)="checkOrUncheckAll()"
+    />
+    <button
+      class="rounded-md hover:bg-slate-300"
+      (click)="toggleCheckDropdown()"
+    >
+      <fa-icon [icon]="faAngleDown"></fa-icon>
+    </button>
+    <ul
+      class="absolute bg-slate-50 shadow-2xl top-6 left-0 justify-center py-2 text-slate-600"
+      [ngClass]="{ hidden: !isCheckDropdownShown }"
+    >
+      <li class="">
+        <button
+          class="w-full px-10 hover:bg-slate-200 cursor-pointer text-nowrap"
+          (click)="checkAllEmails()"
+        >
+          All
+        </button>
+      </li>
+      <li class="">
+        <button
+          class="w-full px-10 hover:bg-slate-200 cursor-pointer text-nowrap"
+          (click)="uncheckAllEmails()"
+        >
+          No one
+        </button>
+      </li>
+      <li class="">
+        <button
+          class="w-full px-10 hover:bg-slate-200 cursor-pointer text-nowrap"
+          (click)="checkByEmailField('isWatched', true)"
+        >
+          Watched
+        </button>
+      </li>
+      <li class="">
+        <button
+          class="w-full px-10 hover:bg-slate-200 cursor-pointer text-nowrap"
+          (click)="checkByEmailField('isWatched', false)"
+        >
+          Unwatched
+        </button>
+      </li>
+      <li class="">
+        <button
+          class="w-full px-10 hover:bg-slate-200 cursor-pointer text-nowrap"
+          (click)="checkByEmailField('isMarked', true)"
+        >
+          Marked
+        </button>
+      </li>
+      <li class="">
+        <button
+          class="w-full px-10 hover:bg-slate-200 cursor-pointer text-nowrap"
+          (click)="checkByEmailField('isMarked', false)"
+        >
+          Not marked
+        </button>
+      </li>
+    </ul>
+  </div>
+  <div class="mx-5">
+    <button
+      class="mr-3 h-8 w-8 rounded-full hover:bg-slate-300"
+      (click)="refreshEmails()"
+    >
+      <fa-icon [icon]="faRotateRight"></fa-icon>
+    </button>
+  </div>
+  <div
+    class="flex-1"
+    [ngClass]="{ hidden: !checkedMessageFromFolderIds.length }"
+  >
+    <button
+      class="mr-3 h-8 w-8 rounded-full hover:bg-slate-300"
+      (click)="moveCheckedToTrash()"
+    >
+      <fa-icon [icon]="faTrashCan" class=""></fa-icon>
+    </button>
+    <button
+      class="mr-3 h-8 w-8 rounded-full hover:bg-slate-300"
+      (click)="changeCheckedMessagesIsWatched()"
+    >
+      @if (isEveryCheckedWatched) {
+      <fa-icon [icon]="faEnvelopeCircleCheck" class=""></fa-icon>
+      }@else {
+      <fa-icon [icon]="faEnvelopeOpen" class=""></fa-icon>
+      }
+    </button>
+    <button
+      class="mr-3 h-8 w-8 rounded-full hover:bg-slate-300"
+      (click)="changeCheckedMessagesIsMarked()"
+    >
+      <fa-icon [icon]="faStar" class=""></fa-icon>
+    </button>
+    <button
+      class="mr-3 h-8 w-8 rounded-full hover:bg-slate-300 border-2 border-slate-500"
+      (click)="moveCheckedToSpam()"
+    >
+      <fa-icon [icon]="faExclamation" class=""></fa-icon>
+    </button>
+    <button class="" (click)="deleteCheckedMessages()">Delete forever</button>
+  </div>
+</div>

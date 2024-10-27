@@ -46,15 +46,36 @@ export const sendEmailService = async (messageObj: EmailToSend) => {
   );
 };
 
+export const deleteEmailsService = async (emailIdsStr: string) => {
+  await pool.query(
+    ` DELETE FROM recipients
+      WHERE email_id IN (${emailIdsStr})
+`
+  );
+  await pool.query(
+    ` DELETE FROM emails_folders
+      WHERE email_id IN (${emailIdsStr})
+`
+  );
+  await pool.query(
+    `
+      DELETE FROM emails
+      WHERE email_id IN (${emailIdsStr})
+    `
+  );
+};
+
 export const getEmailsService = async (folder_id: number) => {
   const res = await pool.query(
     `
-    SELECT e.email_id AS emailId, title, e.text_body AS textBody, e.sender_id AS senderId, e.sent_at AS sentAt, e.is_watched AS isWatched, e.is_marked AS isMarked, e_f.folder_id AS folderId, e_f.email_folder_id AS emailFromFolderId
-    FROM emails AS e
-    INNER JOIN
-      (SELECT * FROM emails_folders
-      WHERE folder_id = ?) AS e_f
-      ON e.email_id = e_f.email_id
+  SELECT e.email_id AS emailId, title, e.text_body AS textBody, e.sender_id AS senderId, e.sent_at AS sentAt,
+    e.is_watched AS isWatched, e.is_marked AS changeIsMarkedFlag, u.user_name as senderName,e_f.folder_id AS folderId, e_f.email_folder_id AS emailFromFolderId
+  FROM emails AS e
+  INNER JOIN users AS u
+  ON u.user_id = e.sender_id
+  INNER JOIN emails_folders AS e_f
+  ON e.email_id = e_f.email_id
+  WHERE folder_id = ?;
     `,
     [folder_id]
   );
@@ -63,43 +84,43 @@ export const getEmailsService = async (folder_id: number) => {
 
 export const moveEmailToOtherFolder = async (
   folderId: number,
-  messageFromFolderId: number
+  messageFromFolderIds: number[]
 ) => {
-  // console.log(folderId, messageFromFolderId);
+  const idsQueryStr = messageFromFolderIds.join(',');
   const res = await pool.query(
     `
     UPDATE emails_folders
-    SET folder_id = ?
-    WHERE email_folder_id = ?`,
-    [folderId, messageFromFolderId]
+    SET folder_id = ${folderId}
+    WHERE email_folder_id IN (${idsQueryStr})`
   );
+  console.log(res);
   return res[0];
 };
 
 export const changeIsWatchedFlag = async (
-  emailId: number,
+  emailIds: number[],
   changeIsWatchedTo: boolean
 ) => {
   const res = await pool.query(
     `UPDATE emails
     SET is_watched = ?
-    WHERE email_id = ?
+    WHERE email_id IN (?)
     `,
-    [changeIsWatchedTo, emailId]
+    [changeIsWatchedTo, ...emailIds]
   );
   return res[0];
 };
 
 export const changeIsMarkedFlag = async (
-  emailId: number,
+  emailId: number[],
   isMarkedTo: boolean
 ) => {
   const res = await pool.query(
     `UPDATE emails
     SET is_marked = ?
-    WHERE email_id = ?
+    WHERE email_id IN (?)
     `,
-    [isMarkedTo, emailId]
+    [isMarkedTo, ...emailId]
   );
   return res[0];
 };

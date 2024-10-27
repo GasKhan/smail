@@ -14,6 +14,7 @@ type MessageFromDB = {
   title: string;
   textBody: string;
   senderId: number;
+  senderName: string;
   recipientEmail: string;
   isWatched: number;
   isMarked: number;
@@ -60,25 +61,32 @@ export class MessagesApiService {
     });
   }
 
-  moveMessageToFolder(folderId: number, emailFromFolderId: number) {
-    // console.log(folderId, emailFromFolderId);
+  moveMessageToFolder(folderId: number, emailFromFolderIds: number[]) {
     return this.http.patch('http://localhost:3000/messages/toFolder', {
       folderId,
-      emailFromFolderId,
+      emailFromFolderIds,
     });
   }
 
-  flagAsWatched(emailId: number, changeIsWatchedTo: boolean) {
+  flagAsWatched(emailIds: number[], changeIsWatchedTo: boolean) {
     return this.http.patch('http://localhost:3000/messages/flagAsWatched', {
-      emailId,
+      emailIds,
       changeIsWatchedTo,
     });
   }
 
-  flagAsMarked(emailId: number, isMarkedTo: boolean) {
+  flagAsMarked(emailIds: number[], isMarkedTo: boolean) {
     return this.http.patch('http://localhost:3000/messages/flagAsMarked', {
-      emailId,
+      emailIds,
       isMarkedTo,
+    });
+  }
+
+  deleteMessage(emailIds: number[]) {
+    return this.http.delete('http://localhost:3000/messages', {
+      params: {
+        emailIds: emailIds,
+      },
     });
   }
 

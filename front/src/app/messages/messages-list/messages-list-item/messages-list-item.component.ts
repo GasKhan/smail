@@ -31,6 +31,7 @@ export class MessagesListItemComponent implements OnInit {
   @Output() onMoveToTrash = new EventEmitter();
   @Output() onFlagAsWatched = new EventEmitter<boolean>();
   @Output() onFlagAsMarked = new EventEmitter<boolean>();
+  @Output() onFlagAsChecked = new EventEmitter<boolean>();
 
   time: any;
 
@@ -49,6 +50,10 @@ export class MessagesListItemComponent implements OnInit {
 
   flagAsMarked() {
     this.onFlagAsMarked.emit(!this.message.isMarked);
+  }
+
+  flagAsChecked() {
+    this.onFlagAsChecked.emit(!this.message.isChecked);
   }
 
   ngOnInit() {

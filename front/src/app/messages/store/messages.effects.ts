@@ -4,6 +4,7 @@ import { MessagesApiService } from '../messagesApi.service';
 import {
   changeIsMessageMarked,
   changeIsMessageWatched,
+  deleteMessagesSuccess,
   FETCH_FOLDERS,
   fetchMessages,
   moveToFolder,
@@ -13,12 +14,15 @@ import {
   sendMessageSuccess,
   setFolders,
   setMessages,
+  startDeleteMessages,
 } from './messages.actions';
 import {
   catchError,
+  combineLatest,
   EMPTY,
   exhaustMap,
   map,
+  mergeMap,
   of,
   switchMap,
   take,
@@ -79,7 +83,13 @@ export class MessagesEffects {
         return this.messagesApiService
           .fetchMessagesFromFolder({ folderId })
           .pipe(
-            map((messages) => setMessages({ messages })),
+            map((messages) => {
+              const messagesWithIsCheckedAdded = messages.map((m) => ({
+                ...m,
+                isChecked: false,
+              }));
+              return setMessages({ messages: messagesWithIsCheckedAdded });
+            }),
             catchError((err) => {
               console.error(err);
               return EMPTY;
@@ -102,15 +112,34 @@ export class MessagesEffects {
       })
     )
   );
+  //TODO: pass ids to deleteMessagesSuccess
+  startDeleteMessage$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(startDeleteMessages),
+      mergeMap(({ messageIds }) => {
+        return combineLatest([
+          of(messageIds),
+          this.messagesApiService.deleteMessage(messageIds),
+        ]).pipe(
+          map(([messageIds, res]) => deleteMessagesSuccess({ messageIds })),
+          catchError((err) => {
+            console.error(err);
+            return EMPTY;
+          })
+        );
+      })
+    )
+  );
 
   moveToFolder$ = createEffect(
     () =>
       this.actions$.pipe(
         ofType(moveToFolder),
-        exhaustMap(({ emailFromFolderId, folderId }) => {
+        exhaustMap(({ emailFromFolderIds, folderId }) => {
           return this.messagesApiService
-            .moveMessageToFolder(folderId, emailFromFolderId)
+            .moveMessageToFolder(folderId, emailFromFolderIds)
             .pipe(
+              // tap(() => console.log('Sending move to folder to back')),
               catchError((err) => {
                 return of(err.message);
               })
@@ -124,9 +153,9 @@ export class MessagesEffects {
     () =>
       this.actions$.pipe(
         ofType(changeIsMessageWatched),
-        exhaustMap(({ messageId, changeIsWatchedTo }) => {
+        exhaustMap(({ messageIds, changeIsWatchedTo }) => {
           return this.messagesApiService
-            .flagAsWatched(messageId, changeIsWatchedTo)
+            .flagAsWatched(messageIds, changeIsWatchedTo)
             .pipe(
               catchError((err) => {
                 console.error(err);
@@ -141,9 +170,9 @@ export class MessagesEffects {
     () =>
       this.actions$.pipe(
         ofType(changeIsMessageMarked),
-        exhaustMap(({ messageId, isMarkedTo }) => {
+        exhaustMap(({ messageIds, isMarkedTo }) => {
           return this.messagesApiService
-            .flagAsMarked(messageId, isMarkedTo)
+            .flagAsMarked(messageIds, isMarkedTo)
             .pipe(
               catchError((err) => {
                 console.error(err);

@@ -1,11 +1,19 @@
 <div
   class="group flex w-full p-5 items-center hover:shadow-[inset_0_-2px_0_0_rgba(100,121,143,0.12)] cursor-pointer ease-in duration-100 bg-slate-50 border-t-2 rounded-sm"
-  [ngClass]="{ 'bg-slate-700': message.isWatched }"
+  [ngClass]="{
+    'bg-slate-700': message.isWatched,
+    'bg-blue-500': message.isChecked
+  }"
 >
   <!-- <div>{{ time }}</div> -->
   <div class="flex w-1/6 shrink-0 items-center mr-14">
     <div class="flex items-center justify-center mr-3">
-      <input type="checkbox" class="h-5 w-5 outline-slate-100 cursor-pointer" />
+      <input
+        type="checkbox"
+        class="h-5 w-5 outline-slate-100 cursor-pointer rounded-e-md"
+        [checked]="message.isChecked"
+        (click)="flagAsChecked()"
+      />
     </div>
     @if (!isInTrash) {
     <button class="mr-3" (click)="flagAsMarked()">
@@ -16,7 +24,7 @@
     </button>
     }
     <div class="overflow-hidden text-ellipsis mr-1 whitespace-nowrap">
-      {{ message.senderId }}
+      {{ message.senderName }}
     </div>
   </div>
 

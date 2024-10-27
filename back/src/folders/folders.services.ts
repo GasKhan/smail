@@ -16,12 +16,3 @@ export const getFoldersService = async (user_id: number) => {
   );
   return res[0];
 };
-
-// SELECT f.folder_id AS folderId, f.folder_name AS folderName, e_f.folder_count
-// FROM folders AS f
-// LEFT JOIN (
-//     SELECT folder_id, COUNT(folder_id) AS folder_count
-//     FROM emails_folders
-//     GROUP BY folder_id
-// ) AS e_f ON f.folder_id = e_f.folder_id
-// WHERE f.user_id = 36;

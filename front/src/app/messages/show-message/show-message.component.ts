@@ -46,7 +46,7 @@ export class ShowMessageComponent {
         if (message && !message.isWatched)
           this.store.dispatch(
             changeIsMessageWatched({
-              messageId: message.emailId,
+              messageIds: [message.emailId],
               changeIsWatchedTo: true,
             })
           );

@@ -2,15 +2,19 @@ import { createReducer, on } from '@ngrx/store';
 import { Folder } from '../../models/folder.model';
 import { Message } from '../../models/message.model';
 import {
+  changeIsMessageChecked,
   changeIsMessageMarked,
   changeIsMessageWatched,
   changeSearchSubstr,
+  checkAllMessages,
+  checkMessagesByField,
+  deleteMessagesSuccess,
   moveToFolder,
   selectFolder,
-  sendMessage,
   sendMessageSuccess,
   setFolders,
   setMessages,
+  uncheckAllMessages,
 } from './messages.actions';
 import { Folders } from '../../models/folder-names';
 
@@ -37,15 +41,16 @@ export const messagesReducer = createReducer(
     ...state,
     selectedFolderId,
   })),
-  on(moveToFolder, (state, { folderId, emailFromFolderId }) => {
+  on(moveToFolder, (state, { folderId, emailFromFolderIds }) => {
     const editedMessages = state.messages.filter(
-      (mes) => mes.emailFromFolderId !== emailFromFolderId
+      (mes) => !emailFromFolderIds.includes(mes.emailFromFolderId)
     );
     const editedFolders = state.folders.map((fol) => {
       let totalMessages = fol.totalMessages;
       if (fol.folderId === state.selectedFolderId)
-        totalMessages = fol.totalMessages - 1;
-      if (fol.folderId === folderId) totalMessages = fol.totalMessages + 1;
+        totalMessages = fol.totalMessages - emailFromFolderIds.length;
+      if (fol.folderId === folderId)
+        totalMessages = fol.totalMessages + emailFromFolderIds.length;
       return { ...fol, totalMessages: totalMessages };
     });
     return { ...state, folders: editedFolders, messages: editedMessages };
@@ -59,21 +64,61 @@ export const messagesReducer = createReducer(
     );
     return { ...state, folders: editedFolders };
   }),
+  on(deleteMessagesSuccess, (state, { messageIds }) => {
+    const editedMessages = state.messages.filter(
+      (m) => !messageIds.includes(m.emailId)
+    );
+    const editedFolders = state.folders.map((f) => {
+      if (f.folderName === Folders.TrashFolder)
+        return { ...f, totalMessages: f.totalMessages - messageIds.length };
+      return f;
+    });
+    return { ...state, messages: editedMessages, folders: editedFolders };
+  }),
   // on(sendMessageError) //TODO: ADD SEND MESSAGE ERROR
-  on(changeIsMessageWatched, (state, { messageId, changeIsWatchedTo }) => {
+  on(changeIsMessageWatched, (state, { messageIds, changeIsWatchedTo }) => {
     const editedMessages = state.messages.map((message) => {
-      if (message.emailId === messageId)
+      if (messageIds.includes(message.emailId))
         return { ...message, isWatched: changeIsWatchedTo };
       return message;
     });
     return { ...state, messages: editedMessages };
   }),
-  on(changeIsMessageMarked, (state, { messageId, isMarkedTo }) => {
+  on(changeIsMessageMarked, (state, { messageIds, isMarkedTo }) => {
     const editedMessages = state.messages.map((message) => {
-      if (message.emailId === messageId)
+      if (messageIds.includes(message.emailId))
         return { ...message, isMarked: isMarkedTo };
       return message;
     });
+    return { ...state, messages: editedMessages };
+  }),
+  on(changeIsMessageChecked, (state, { messageId, isCheckedTo }) => {
+    const editedMessages = state.messages.map((message) => {
+      if (message.emailId === messageId)
+        return { ...message, isChecked: isCheckedTo };
+      return message;
+    });
+    return { ...state, messages: editedMessages };
+  }),
+  on(checkMessagesByField, (state, { messageField, flagIs }) => {
+    const editedMessages = state.messages.map((m) => {
+      if (m[messageField] === flagIs) return { ...m, isChecked: true };
+      return { ...m, isChecked: false };
+    });
+    return { ...state, messages: editedMessages };
+  }),
+  on(checkAllMessages, (state) => {
+    const editedMessages = state.messages.map((m) => ({
+      ...m,
+      isChecked: true,
+    }));
+    return { ...state, messages: editedMessages };
+  }),
+  on(uncheckAllMessages, (state) => {
+    const editedMessages = state.messages.map((m) => ({
+      ...m,
+      isChecked: false,
+    }));
     return { ...state, messages: editedMessages };
   }),
   on(changeSearchSubstr, (state, { newSearchSubstr }) => ({

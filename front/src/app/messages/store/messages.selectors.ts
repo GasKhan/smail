@@ -30,6 +30,13 @@ export const selectTrashFolderId = createSelector(
       ?.folderId
 );
 
+export const selectSpamFolderId = createSelector(
+  selectMessagesState,
+  (messages) =>
+    messages.folders.find((folder) => folder.folderName === Folders.Spam)
+      ?.folderId
+);
+
 export const selectFilteredMessages = createSelector(
   selectMessages,
   selectSearchSubstr,
@@ -43,4 +50,9 @@ export const selectFilteredMessages = createSelector(
       return isTitleStartsWith >= 0 || isBodyStartsWith >= 0;
     });
   }
+);
+
+export const selectCheckedMessages = createSelector(
+  selectMessages,
+  (messages) => messages.filter((m) => m.isChecked === true)
 );
