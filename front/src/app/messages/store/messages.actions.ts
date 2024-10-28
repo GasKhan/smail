@@ -8,6 +8,7 @@ export const SELECT_FOLDER = '[Messages] Select Folder';
 export const MOVE_TO_FOLDER = '[Messages] Move To Folder';
 export const FETCH_MESSAGES = '[Messages] Fetch Messages';
 export const SET_MESSAGES = '[Messages] Set Messages';
+export const ADD_MESSAGES = '[Messages] Add Messages';
 export const START_SEND_MESSAGE = '[Messages] Start Send Message';
 export const SEND_MESSAGE_SUCCESS = '[Messages] Send Message Success';
 export const SEND_MESSAGE_ERROR = '[Messages] Send Message Error';
@@ -42,10 +43,18 @@ export const moveToFolder = createAction(
   props<{ emailFromFolderIds: number[]; folderId: number }>()
 );
 
-export const fetchMessages = createAction(FETCH_MESSAGES);
+export const fetchMessages = createAction(
+  FETCH_MESSAGES,
+  props<{ offset: number; limit?: number }>()
+);
 
 export const setMessages = createAction(
   SET_MESSAGES,
+  props<{ messages: Message[] }>()
+);
+
+export const addMessages = createAction(
+  ADD_MESSAGES,
   props<{ messages: Message[] }>()
 );
 

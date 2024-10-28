@@ -6,9 +6,11 @@ import {
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faAngleDown,
+  faCheck,
   faEnvelopeCircleCheck,
   faEnvelopeOpen,
   faExclamation,
+  faMinus,
   faRotateRight,
   faStar,
   faTrashCan,
@@ -51,6 +53,7 @@ export class MessageControlComponent {
   faStar = faStar;
   faAngleDown = faAngleDown;
   faRotateRight = faRotateRight;
+  faCheck = faCheck;
 
   isCheckDropdownShown = false;
   checkedMessageIds: number[] = [];
@@ -61,7 +64,7 @@ export class MessageControlComponent {
   spamFolderId!: number;
 
   refreshEmails() {
-    this.store.dispatch(fetchMessages());
+    this.store.dispatch(fetchMessages({ offset: 0 }));
   }
 
   toggleCheckDropdown() {

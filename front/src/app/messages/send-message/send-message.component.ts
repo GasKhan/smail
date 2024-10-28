@@ -92,14 +92,8 @@ export class SendMessageComponent implements OnInit {
       recipientEmail: this.messageForm.get('sendTo')?.value,
     };
     this.store.dispatch(sendMessage({ messageData: emailData }));
+    this.messageForm.reset();
     this.toggleSendMessageService.closeSendMessage();
-  }
-
-  editTextBody(editedText: string) {
-    if (!this.messageForm.controls['body'].touched)
-      this.messageForm.controls['body'].markAsTouched();
-
-    this.messageForm.get('body')?.setValue(editedText);
   }
 
   addFile(file: File) {

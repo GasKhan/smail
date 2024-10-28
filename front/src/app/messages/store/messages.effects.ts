@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { MessagesApiService } from '../messagesApi.service';
 import {
+  addMessages,
   changeIsMessageMarked,
   changeIsMessageWatched,
   deleteMessagesSuccess,
@@ -61,8 +62,8 @@ export class MessagesEffects {
           take(1),
           map((folder) => folder?.folderId)
         );
+        // tap((t) => console.log(t)),
       }),
-      // tap((t) => console.log(t)),
       map((recievedFolderId) =>
         selectFolder({ selectedFolderId: recievedFolderId as number })
       )
@@ -71,7 +72,44 @@ export class MessagesEffects {
 
   fetchMessages$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(selectFolder, fetchMessages),
+      ofType(fetchMessages),
+      switchMap((offsetData) => {
+        return combineLatest([
+          of(offsetData),
+          this.store.select(getSelectedFolderId).pipe(
+            take(1),
+            map((folderId) => folderId as number)
+          ),
+        ]);
+      }),
+      // tap((t) => console.log(t)),
+      switchMap(([offsetData, folderId]) => {
+        return this.messagesApiService
+          .fetchMessagesFromFolder(
+            { folderId },
+            offsetData.offset,
+            offsetData.limit
+          )
+          .pipe(
+            map((messages) => {
+              const messagesWithIsCheckedAdded = messages.map((m) => ({
+                ...m,
+                isChecked: false,
+              }));
+              return addMessages({ messages: messagesWithIsCheckedAdded });
+            }),
+            catchError((err) => {
+              console.error(err);
+              return EMPTY;
+            })
+          );
+      })
+    )
+  );
+
+  selectFolder$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(selectFolder),
       switchMap(() => {
         return this.store.select(getSelectedFolderId).pipe(
           take(1),
@@ -81,7 +119,7 @@ export class MessagesEffects {
       // tap((t) => console.log(t)),
       switchMap((folderId) => {
         return this.messagesApiService
-          .fetchMessagesFromFolder({ folderId })
+          .fetchMessagesFromFolder({ folderId }, 0)
           .pipe(
             map((messages) => {
               const messagesWithIsCheckedAdded = messages.map((m) => ({

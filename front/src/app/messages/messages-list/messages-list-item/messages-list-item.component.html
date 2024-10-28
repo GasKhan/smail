@@ -5,15 +5,21 @@
     'bg-blue-500': message.isChecked
   }"
 >
-  <!-- <div>{{ time }}</div> -->
   <div class="flex w-1/6 shrink-0 items-center mr-14">
     <div class="flex items-center justify-center mr-3">
-      <input
-        type="checkbox"
-        class="h-5 w-5 outline-slate-100 cursor-pointer rounded-e-md"
-        [checked]="message.isChecked"
-        (click)="flagAsChecked()"
-      />
+      <label
+        class="flex justify-center items-center bg-slate-100 border-2 cursor-pointer hover:bg-slate-200 border-slate-500 mr-1 h-6 w-6 has-[:checked]:bg-blue-300 rounded-md"
+      >
+        <input
+          type="checkbox"
+          class="hidden"
+          [checked]="message.isChecked"
+          (click)="flagAsChecked()"
+        />
+        @if (message.isChecked) {
+        <fa-icon [icon]="faCheck" class="text-slate-100"></fa-icon>
+        }
+      </label>
     </div>
     @if (!isInTrash) {
     <button class="mr-3" (click)="flagAsMarked()">

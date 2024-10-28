@@ -35,6 +35,8 @@ import {
 } from '../store/messages.actions';
 import { Message } from '../../models/message.model';
 import { MessageControlComponent } from '../message-control/message-control.component';
+import { ScrollAtEndDirective } from './scroll-at-end.directive';
+import { fromEvent } from 'rxjs';
 
 @Component({
   selector: 'app-messages-list',
@@ -45,6 +47,7 @@ import { MessageControlComponent } from '../message-control/message-control.comp
     AsyncPipe,
     NgClass,
     MessageControlComponent,
+    ScrollAtEndDirective,
   ],
   templateUrl: './messages-list.component.html',
   styleUrl: './messages-list.component.css',
@@ -52,6 +55,8 @@ import { MessageControlComponent } from '../message-control/message-control.comp
 })
 export class MessagesListComponent {
   trashFolderId!: number;
+  loadedMessagesOffset = 0;
+  limit = 10;
 
   messages = this.store.select(selectFilteredMessages);
 
@@ -89,6 +94,13 @@ export class MessagesListComponent {
         isCheckedTo: isCheckedTo,
       })
     );
+  }
+
+  onScrollAtEnd() {
+    this.store.dispatch(
+      fetchMessages({ offset: this.loadedMessagesOffset, limit: this.limit })
+    );
+    this.loadedMessagesOffset += this.limit;
   }
 
   constructor(private store: Store<StoreState>) {

@@ -33,10 +33,14 @@ export class MessagesApiService {
     });
   }
 
-  fetchMessagesFromFolder(data: { folderId: number }) {
+  fetchMessagesFromFolder(
+    data: { folderId: number },
+    offset: number,
+    limit = 10
+  ) {
     return this.http
       .get<MessageFromDB[]>('http://localhost:3000/messages', {
-        params: { folder_id: data.folderId },
+        params: { folder_id: data.folderId, offset, limit },
       })
       .pipe(
         map((messages) =>

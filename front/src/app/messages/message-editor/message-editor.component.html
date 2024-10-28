@@ -1,4 +1,4 @@
-<div>
+<form [formGroup]="fGroup">
   <div class="main-container">
     <div
       class="editor-container editor-container_classic-editor"
@@ -7,6 +7,7 @@
       <div class="editor-container__editor">
         <div #editorElement>
           <ckeditor
+            formControlName="body"
             [editor]="Editor"
             [config]="config"
             *ngIf="isLayoutReady"
@@ -16,4 +17,4 @@
       </div>
     </div>
   </div>
-</div>
+</form>

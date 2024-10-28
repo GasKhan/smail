@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
+  faCheck,
   faEnvelope,
   faEnvelopeOpen,
   faStar,
@@ -39,6 +40,7 @@ export class MessagesListItemComponent implements OnInit {
   faTrash = faTrashCan;
   faEnvelopeOpen = faEnvelopeOpen;
   faEnvelope = faEnvelope;
+  faCheck = faCheck;
 
   moveToTrash() {
     this.onMoveToTrash.emit();

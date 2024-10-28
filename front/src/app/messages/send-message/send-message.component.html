@@ -73,10 +73,7 @@
       placeholder="Title:"
       class="bg-inherit py-1 border-b-2 mb-5 outline-none"
     />
-    <app-message-editor
-      class=""
-      (onTextChanged)="editTextBody($event)"
-    ></app-message-editor>
+    <app-message-editor class="" [fGroup]="messageForm"></app-message-editor>
 
     @if (!messageForm.controls['body'].valid &&
     messageForm.controls['body'].touched) {

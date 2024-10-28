@@ -65,19 +65,24 @@ export const deleteEmailsService = async (emailIdsStr: string) => {
   );
 };
 
-export const getEmailsService = async (folder_id: number) => {
+export const getEmailsService = async (
+  folder_id: number,
+  offset: number,
+  limit: number
+) => {
   const res = await pool.query(
     `
   SELECT e.email_id AS emailId, title, e.text_body AS textBody, e.sender_id AS senderId, e.sent_at AS sentAt,
-    e.is_watched AS isWatched, e.is_marked AS changeIsMarkedFlag, u.user_name as senderName,e_f.folder_id AS folderId, e_f.email_folder_id AS emailFromFolderId
+    e.is_watched AS isWatched, e.is_marked AS isMarked, u.user_name as senderName,e_f.folder_id AS folderId, e_f.email_folder_id AS emailFromFolderId
   FROM emails AS e
   INNER JOIN users AS u
   ON u.user_id = e.sender_id
   INNER JOIN emails_folders AS e_f
   ON e.email_id = e_f.email_id
-  WHERE folder_id = ?;
+  WHERE folder_id = ?
+  LIMIT ? OFFSET ?
     `,
-    [folder_id]
+    [folder_id, limit, offset]
   );
   return res[0];
 };

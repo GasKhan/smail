@@ -2,6 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import { Folder } from '../../models/folder.model';
 import { Message } from '../../models/message.model';
 import {
+  addMessages,
   changeIsMessageChecked,
   changeIsMessageMarked,
   changeIsMessageWatched,
@@ -56,6 +57,10 @@ export const messagesReducer = createReducer(
     return { ...state, folders: editedFolders, messages: editedMessages };
   }),
   on(setMessages, (state, { messages }) => ({ ...state, messages })),
+  on(addMessages, (state, { messages }) => ({
+    ...state,
+    messages: [...state.messages, ...messages],
+  })),
   on(sendMessageSuccess, (state) => {
     const editedFolders = state.folders.map((folder) =>
       folder.folderName === Folders.Sent

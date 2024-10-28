@@ -3,6 +3,8 @@ import {
   ChangeDetectorRef,
   Component,
   EventEmitter,
+  Input,
+  OnDestroy,
   Output,
   ViewEncapsulation,
 } from '@angular/core';
@@ -26,17 +28,19 @@ import {
   Undo,
   type EditorConfig,
 } from 'ckeditor5';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-message-editor',
   standalone: true,
-  imports: [CommonModule, CKEditorModule],
+  imports: [CommonModule, CKEditorModule, ReactiveFormsModule],
   templateUrl: './message-editor.component.html',
   styleUrl: './message-editor.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
   encapsulation: ViewEncapsulation.None,
 })
 export class MessageEditorComponent {
+  @Input() fGroup!: FormGroup;
   @Output() onTextChanged = new EventEmitter<string>();
 
   public isLayoutReady = false;

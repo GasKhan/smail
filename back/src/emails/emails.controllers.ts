@@ -35,11 +35,11 @@ export const deleteEmails = async (req: Request, res: Response) => {
 };
 
 export const getEmailsFromFolder = async (req: Request, res: Response) => {
-  const { folder_id } = req.query;
+  const { folder_id, offset, limit } = req.query;
 
   try {
-    if (folder_id) {
-      const result = await getEmailsService(+folder_id);
+    if (folder_id && offset && limit) {
+      const result = await getEmailsService(+folder_id, +offset, +limit);
       res.status(200).json(result);
     }
   } catch (e) {

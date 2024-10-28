@@ -13,6 +13,7 @@ import { SendMessageComponent } from './messages/send-message/send-message.compo
 import { SendMessageToggleService } from './sendMessage-toggle.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { AddFileComponent } from './messages/add-file/add-file.component';
+import { MessageControlComponent } from './messages/message-control/message-control.component';
 
 @Component({
   selector: 'app-root',

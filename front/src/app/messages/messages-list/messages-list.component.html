@@ -1,11 +1,13 @@
 <app-message-control></app-message-control>
-@for ( message of messages | async; track message) {
-<app-messages-list-item
-  [message]="message"
-  [isInTrash]="trashFolderId === message.folderId"
-  (onMoveToTrash)="moveToTrashFolder(message)"
-  (onFlagAsWatched)="flagEmailAsWatched(message.emailId, $event)"
-  (onFlagAsMarked)="flagEmailAsMarked(message.emailId, $event)"
-  (onFlagAsChecked)="flagEmailAsChecked(message.emailId, $event)"
-></app-messages-list-item>
-}
+<div class="" appScrollAtEnd (scrollAtEnd)="onScrollAtEnd()">
+  @for ( message of messages | async; track message) {
+  <app-messages-list-item
+    [message]="message"
+    [isInTrash]="trashFolderId === message.folderId"
+    (onMoveToTrash)="moveToTrashFolder(message)"
+    (onFlagAsWatched)="flagEmailAsWatched(message.emailId, $event)"
+    (onFlagAsMarked)="flagEmailAsMarked(message.emailId, $event)"
+    (onFlagAsChecked)="flagEmailAsChecked(message.emailId, $event)"
+  ></app-messages-list-item>
+  }
+</div>
