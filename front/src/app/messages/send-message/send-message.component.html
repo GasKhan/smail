@@ -4,7 +4,7 @@
 ></div>
 <form
   [formGroup]="messageForm"
-  class="bg-slate-100 flex-col px-3 py-1 my-1 rounded-md fixed left-1/2 -translate-x-1/2"
+  class="bg-slate-100 flex-col px-3 py-1 my-1 rounded-md fixed left-1/2 -translate-x-1/2 dark:bg-slate-700 dark:text-slate-300"
   [ngClass]="{
       'w-1/2': popupAppearance === APPEARANCE_OPTIONS.regular,
       'w-2/3': popupAppearance === APPEARANCE_OPTIONS.wide,
@@ -19,14 +19,14 @@
     <div class="flex items-center">
       <button
         type="button"
-        class="mr-2 hover:bg-slate-200"
+        class="mr-2 hover:bg-slate-200 dark:hover:bg-slate-600"
         (click)="resizePopup(APPEARANCE_OPTIONS.minimized)"
       >
         <fa-icon [icon]="faMinimize"></fa-icon>
       </button>
       <button
         type="button"
-        class="mr-2 hover:bg-slate-200"
+        class="mr-2 hover:bg-slate-200 dark:hover:bg-slate-600"
         (click)="resizePopup(APPEARANCE_OPTIONS.wide)"
       >
         <fa-icon
@@ -44,7 +44,7 @@
       </button>
       <button
         type="button"
-        class="hover:bg-slate-200"
+        class="hover:bg-slate-200 dark:hover:bg-slate-600"
         (click)="closeSendMessage()"
       >
         <fa-icon [icon]="faClose"></fa-icon>
@@ -60,7 +60,7 @@
       formControlName="sendTo"
       id="to"
       placeholder="To:"
-      class="bg-inherit py-1 border-b-2 outline-none"
+      class="bg-inherit py-1 border-b-2 border-slate-500 outline-none"
     />
     @if (!messageForm.controls['sendTo'].valid &&
     messageForm.controls['sendTo'].touched) {
@@ -71,7 +71,7 @@
       formControlName="title"
       id="title"
       placeholder="Title:"
-      class="bg-inherit py-1 border-b-2 mb-5 outline-none"
+      class="bg-inherit py-1 border-b-2 border-slate-500 mb-5 outline-none"
     />
     <app-message-editor class="" [fGroup]="messageForm"></app-message-editor>
 

@@ -1,14 +1,15 @@
 <div
-  class="group flex w-full p-5 items-center hover:shadow-[inset_0_-2px_0_0_rgba(100,121,143,0.12)] cursor-pointer ease-in duration-100 bg-slate-50 border-t-2 rounded-sm"
+  class="group flex w-full p-5 items-center hover:shadow-[inset_0_-2px_0_0_rgba(100,121,143,0.12)] cursor-pointer ease-in duration-100 bg-slate-50 border-t-2 rounded-sm dark:bg-slate-800"
   [ngClass]="{
-    'bg-slate-700': message.isWatched,
+    'bg-slate-500': message.isWatched,
+    'dark:bg-slate-500': message.isWatched,
     'bg-blue-500': message.isChecked
   }"
 >
   <div class="flex w-1/6 shrink-0 items-center mr-14">
     <div class="flex items-center justify-center mr-3">
       <label
-        class="flex justify-center items-center bg-slate-100 border-2 cursor-pointer hover:bg-slate-200 border-slate-500 mr-1 h-6 w-6 has-[:checked]:bg-blue-300 rounded-md"
+        class="flex justify-center items-center bg-slate-100 border-2 cursor-pointer hover:bg-slate-200 border-slate-500 mr-1 h-6 w-6 has-[:checked]:bg-blue-300 dark:has-[:checked]:bg-blue-600 rounded-md"
       >
         <input
           type="checkbox"
@@ -57,14 +58,14 @@
   </div>
   <div class="hidden group-hover:block ml-auto">
     <button
-      class="mx-1 rounded-full hover:bg-slate-300 w-6 h-6 disabled:bg-transparent disabled:text-gray-300"
+      class="mx-1 rounded-full hover:bg-slate-300 dark:hover:bg-slate-600 w-6 h-6 disabled:bg-transparent disabled:text-gray-300"
       (click)="moveToTrash()"
       [disabled]="isInTrash"
     >
       <fa-icon [icon]="faTrash" class=""></fa-icon>
     </button>
     <button
-      class="mx-1 rounded-full hover:bg-slate-300 w-6 h-6"
+      class="mx-1 rounded-full hover:bg-slate-300 dark:hover:bg-slate-600 w-6 h-6"
       (click)="flagAsWatched()"
     >
       @if (message.isWatched) {

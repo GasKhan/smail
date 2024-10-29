@@ -3,20 +3,20 @@
     class="flex basis-1/2 grow mr-2 relative border-2 border-slate-200 px-8 py-2 bg-sky-50 rounded-3xl focus-within:bg-slate-50 focus-within:shadow-md"
   >
     <div
-      class="flex items-center justify-center rounded-full hover:bg-slate-100 active:bg-slate-200 mr-5 w-10 h-10"
+      class="flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-300 active:bg-slate-200 mr-5 w-10 h-10"
     >
-      <fa-icon [icon]="faSearch"></fa-icon>
+      <fa-icon [icon]="faSearch" class="dark:text-slate-600"></fa-icon>
     </div>
     <input
       type="text"
       id="search"
       [formControl]="searchControl"
       placeholder="Search in mails"
-      class="outline-none text-lg w-full bg-inherit mr-5"
+      class="outline-none text-lg w-full bg-inherit mr-5 dark:text-slate-600"
     />
     @if (searchControl.value) {
     <button
-      class="rounded-full bg-inherit hover:bg-slate-100 active:bg-slate-200 w-10 h-10"
+      class="rounded-full bg-inherit hover:bg-slate-100 dark:hover:bg-slate-300 active:bg-slate-200 w-10 h-10"
       (click)="clearSearchInput()"
     >
       <fa-icon [icon]="faX" class="text-gray-600"></fa-icon>
@@ -32,6 +32,7 @@
         id="theme-checkbox"
         type="checkbox"
         class="peer hidden"
+        [checked]="themeToggleService.isDark"
         (change)="toggleTheme()"
       />
       <fa-icon [icon]="faMoon" class="text-2xl fancy"></fa-icon>
@@ -45,7 +46,7 @@
   @if (!(user | async)) {
   <a
     [routerLink]="['/login']"
-    class="rounded-full border-2 border-gray-600 p-3 hover:bg-slate-100 active:bg-slate-200"
+    class="rounded-full border-2 border-gray-600 p-3 hover:bg-slate-100 dark:hover:bg-slate-300 active:bg-slate-200"
   >
     <fa-icon
       [icon]="faUser"
@@ -54,7 +55,7 @@
   </a>
   }@else {
   <button
-    class="rounded-full border-2 border-gray-600 p-3 hover:bg-slate-100 active:bg-slate-200"
+    class="rounded-full border-2 border-gray-600 p-3 hover:bg-slate-100 dark:hover:bg-slate-300 active:bg-slate-200"
     (click)="logout()"
   >
     <fa-icon

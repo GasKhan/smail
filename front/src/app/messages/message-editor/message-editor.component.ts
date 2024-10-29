@@ -48,6 +48,7 @@ export class MessageEditorComponent {
   public config: EditorConfig = {}; // CKEditor needs the DOM tree before calculating the configuration.
   public ngAfterViewInit(): void {
     this.config = {
+      ui: {},
       toolbar: {
         items: [
           'undo',

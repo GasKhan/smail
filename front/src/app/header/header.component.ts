@@ -10,7 +10,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { ThemeToggleService } from '../theme-toggle.service';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Store } from '@ngrx/store';
 import { changeSearchSubstr } from '../messages/store/messages.actions';
@@ -20,7 +20,13 @@ import { StoreState } from '../store';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [ReactiveFormsModule, FontAwesomeModule, AsyncPipe, RouterLink],
+  imports: [
+    ReactiveFormsModule,
+    FontAwesomeModule,
+    AsyncPipe,
+    RouterLink,
+    NgClass,
+  ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -53,7 +59,7 @@ export class HeaderComponent {
   }
 
   constructor(
-    private themeToggleService: ThemeToggleService,
+    public themeToggleService: ThemeToggleService,
     private store: Store<StoreState>
   ) {
     this.searchControl.valueChanges

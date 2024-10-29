@@ -1,6 +1,6 @@
 <div class="fixed h-full w-full bg-slate-400 top-0 left-0">
   <form
-    class="relative top-1/2 left-1/2 p-16 bg-slate-100 flex flex-col w-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md items-center hover:shadow-2xl"
+    class="relative top-1/2 left-1/2 p-16 bg-slate-300 flex flex-col w-1/2 -translate-x-1/2 -translate-y-1/2 rounded-md items-center hover:shadow-2x dark:bg-slate-800"
     [formGroup]="signupForm"
   >
     <div class="flex w-full flex-col mb-3">
@@ -8,7 +8,7 @@
       <input
         type="text"
         id="email"
-        class="max-w-full px-2 py-1 rounded-md"
+        class="max-w-full px-2 py-1 rounded-md bg-slate-200 dark:text-slate-600"
         formControlName="email"
       />
     </div>
@@ -17,7 +17,7 @@
       <input
         type="text"
         id="username"
-        class="max-w-full px-2 py-1 rounded-md"
+        class="max-w-full px-2 py-1 rounded-md bg-slate-200 dark:text-slate-600"
         formControlName="username"
       />
     </div>
@@ -26,13 +26,13 @@
       <input
         type="password"
         id="password"
-        class="max-w-full px-2 py-1 rounded-md"
+        class="max-w-full px-2 py-1 rounded-md bg-slate-200 dark:text-slate-600"
         formControlName="password"
       />
     </div>
     <button
       type="submit"
-      class="bg-slate-300 hover:bg-slate-400 px-10 py-2 border-slate-400 border-2 rounded-md cursor-pointer disabled:bg-slate-200 disabled:border-slate-50"
+      class="bg-slate-300 hover:bg-slate-400 px-10 py-2 border-slate-400 border-2 rounded-md cursor-pointer disabled:bg-slate-200 disabled:border-slate-50 disabled:dark:bg-blue-500 dark:bg-blue-700"
       [disabled]="signupForm.invalid"
       (click)="signUpUser()"
     >
@@ -45,7 +45,7 @@
       >Already have account? Log in</a
     >
     <button
-      class="absolute top-1 right-3 p-3 hover:bg-slate-300 rounded-md"
+      class="absolute top-1 right-3 p-3 hover:bg-slate-300 dark:hover:bg-slate-600 rounded-md"
       (click)="closeSignupPage()"
     >
       <fa-icon [icon]="faX"></fa-icon>

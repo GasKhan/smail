@@ -2,28 +2,30 @@
 <div class=""></div>
 }
 
-<div class="flex">
+<div class="flex dark:bg-slate-700">
   <p class="font-bold">{{ (message$ | async)?.title }}</p>
   <div class="grow flex justify-end">
-    <div class=""></div>
     <span class="mr-3">{{ getFormattedDate((message$ | async)?.sentAt) }}</span>
-    <button class="mr-3 rounded-full hover:bg-slate-300 w-7 h-7">
+    <button
+      class="mr-3 rounded-full hover:bg-slate-300 dark:hover:bg-slate-600 w-7 h-7"
+    >
       <fa-icon [icon]="faStar"></fa-icon>
     </button>
-    <button class="mr-3 rounded-full hover:bg-slate-300 w-7 h-7">
+    <button
+      class="mr-3 rounded-full hover:bg-slate-300 dark:hover:bg-slate-600 w-7 h-7"
+    >
       <fa-icon [icon]="faReply"></fa-icon>
     </button>
-    <button class="rounded-full hover:bg-slate-300 w-7 h-7">
+    <button
+      class="rounded-full hover:bg-slate-300 dark:hover:bg-slate-600 w-7 h-7"
+    >
       <fa-icon [icon]="faReplyAll"></fa-icon>
     </button>
   </div>
 </div>
-<div class="bg-slate-200 px-14 py-4">
-  <!-- <div class="bg-slate-50 mx-auto text-center">
-    {{ (message$ | async)?.textBody }}
-  </div> -->
+<div class="bg-slate-200 px-14 py-4 dark:bg-slate-600">
   <div
-    class="bg-slate-50 mx-auto text-center"
+    class="bg-slate-50 mx-auto text-center dark:bg-slate-500"
     [innerHTML]="(message$ | async)?.textBody"
   ></div>
 </div>

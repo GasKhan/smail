@@ -1,7 +1,7 @@
 <aside class="w-full">
   <div class="flex items-center py-12 px-5">
     <button
-      class="flex items-center justify-center-center px-7 py-5 bg-blue-200 min-w-48 text-lg rounded-lg hover:shadow-xl"
+      class="flex items-center justify-center-center px-7 py-5 bg-blue-200 min-w-48 text-lg rounded-lg hover:shadow-xl dark:bg-blue-500"
       (click)="openSendMessage()"
     >
       <fa-icon [icon]="faPencil" class="ml-5"></fa-icon>
@@ -12,7 +12,7 @@
     @for (folder of folders | async; track folder) {
     <li class="">
       <a
-        class="flex w-full h-full py-3 pr-4 pl-10 text-md rounded-e-3xl hover:bg-slate-200"
+        class="flex w-full h-full py-3 pr-4 pl-10 text-md rounded-e-3xl hover:bg-slate-200 dark:hover:bg-slate-400"
         routerLinkActive="bg-slate-500 hover:bg-slate-600 font-semibold"
         [routerLink]="[folder.folderName.toLowerCase()]"
         (click)="goToFolder(folder.folderId)"

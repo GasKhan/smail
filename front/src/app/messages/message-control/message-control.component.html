@@ -11,7 +11,7 @@
       />
       <label
         for="checkAll"
-        class="flex justify-center items-center bg-slate-100 border-2 cursor-pointer hover:bg-slate-200 border-slate-500 mr-1 h-6 w-6 peer-checked:bg-blue-300 rounded-md"
+        class="flex justify-center items-center bg-slate-100 border-2 cursor-pointer hover:bg-slate-200 border-slate-500 mr-1 h-6 w-6 peer-checked:bg-blue-300 dark:peer-checked:bg-blue-600 rounded-md"
       >
         @if (checkedMessageIds.length) {
         <fa-icon [icon]="faCheck" class="text-slate-100"></fa-icon>
@@ -19,13 +19,13 @@
       </label>
     </div>
     <button
-      class="rounded-md hover:bg-slate-300"
+      class="rounded-md hover:bg-slate-300 dark:hover:bg-slate-500"
       (click)="toggleCheckDropdown()"
     >
       <fa-icon [icon]="faAngleDown"></fa-icon>
     </button>
     <ul
-      class="absolute bg-slate-50 shadow-2xl top-6 left-0 justify-center py-2 text-slate-600"
+      class="absolute bg-slate-50 shadow-2xl top-6 left-0 justify-center py-2 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
       [ngClass]="{ hidden: !isCheckDropdownShown }"
     >
       <li class="">
@@ -80,7 +80,7 @@
   </div>
   <div class="mx-5">
     <button
-      class="mr-3 h-8 w-8 rounded-full hover:bg-slate-300"
+      class="mr-3 h-8 w-8 rounded-full hover:bg-slate-300 dark:hover:bg-slate-600"
       (click)="refreshEmails()"
     >
       <fa-icon [icon]="faRotateRight"></fa-icon>
@@ -91,13 +91,13 @@
     [ngClass]="{ hidden: !checkedMessageFromFolderIds.length }"
   >
     <button
-      class="mr-3 h-8 w-8 rounded-full hover:bg-slate-300"
+      class="mr-3 h-8 w-8 rounded-full hover:bg-slate-300 dark:hover:bg-slate-600"
       (click)="moveCheckedToTrash()"
     >
       <fa-icon [icon]="faTrashCan" class=""></fa-icon>
     </button>
     <button
-      class="mr-3 h-8 w-8 rounded-full hover:bg-slate-300"
+      class="mr-3 h-8 w-8 rounded-full hover:bg-slate-300 dark:hover:bg-slate-600"
       (click)="changeCheckedMessagesIsWatched()"
     >
       @if (isEveryCheckedWatched) {
@@ -107,13 +107,13 @@
       }
     </button>
     <button
-      class="mr-3 h-8 w-8 rounded-full hover:bg-slate-300"
+      class="mr-3 h-8 w-8 rounded-full hover:bg-slate-300 dark:hover:bg-slate-600"
       (click)="changeCheckedMessagesIsMarked()"
     >
       <fa-icon [icon]="faStar" class=""></fa-icon>
     </button>
     <button
-      class="flex items-center justify-center mr-3 h-6 w-6 rounded-full hover:bg-slate-300 border-2 border-slate-500"
+      class="flex items-center justify-center mr-3 h-6 w-6 rounded-full hover:bg-slate-300 border-2 border-slate-500 dark:hover:bg-slate-600"
       (click)="moveCheckedToSpam()"
     >
       <fa-icon [icon]="faExclamation" class=""></fa-icon>
