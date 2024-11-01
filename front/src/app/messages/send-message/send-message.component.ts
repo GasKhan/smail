@@ -1,5 +1,10 @@
 import { NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
   faClose,
@@ -50,6 +55,9 @@ interface MessageForm {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SendMessageComponent implements OnInit {
+  @Input() sendTo = '';
+  @Input() title = '';
+  @Input() body = '';
   messageForm!: FormGroup;
   APPEARANCE_OPTIONS = APPEARANCE_OPTIONS;
   popupAppearance = APPEARANCE_OPTIONS.regular;
@@ -61,9 +69,9 @@ export class SendMessageComponent implements OnInit {
 
   ngOnInit(): void {
     const initialFormValues: MessageForm = {
-      sendTo: '',
-      title: '',
-      body: '',
+      sendTo: this.sendTo,
+      title: this.title,
+      body: this.body,
       file: null,
     };
     this.messageForm = this.fb.group({

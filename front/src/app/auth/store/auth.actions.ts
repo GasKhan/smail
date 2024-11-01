@@ -7,6 +7,7 @@ export const SIGNUP_SUCCESS = '[Auth] Signup Success';
 export const START_LOGIN = '[Auth] Start Login';
 export const LOGIN_SUCCESS = '[Auth] Login';
 export const LOGIN_FAILED = '[Auth] Login Failed';
+export const LOGOUT = '[Auth] Logout';
 
 export const signUp = createAction(
   START_SIGNUP,
@@ -18,7 +19,10 @@ export const signUpFailed = createAction(
   props<{ signUpError: string }>()
 );
 
-export const signUpSuccess = createAction(SIGNUP_SUCCESS);
+export const signUpSuccess = createAction(
+  SIGNUP_SUCCESS,
+  props<{ userData: UserResp }>()
+);
 
 export const startLogin = createAction(
   START_LOGIN,
@@ -34,3 +38,5 @@ export const loginFailed = createAction(
   LOGIN_FAILED,
   props<{ loginError: string }>()
 );
+
+export const logout = createAction(LOGOUT);

@@ -7,8 +7,9 @@ import {
   signUpSuccess,
   START_LOGIN,
   LOGIN_SUCCESS,
+  logout,
 } from './auth.actions';
-import { catchError, exhaustMap, map, of, tap } from 'rxjs';
+import { catchError, EMPTY, exhaustMap, map, of, switchMap, tap } from 'rxjs';
 import { UserApiService } from '../userApi.service';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
@@ -23,10 +24,17 @@ export class UserEffects {
         ofType(START_SIGNUP),
         exhaustMap((userData) => {
           return this.userApiService.signup(userData).pipe(
-            tap(() => {
-              this.router.navigate(['/login']);
+            tap((userData) => {
+              localStorage.setItem(
+                'refreshToken',
+                userData.tokens.refreshToken
+              );
+              localStorage.setItem('accessToken', userData.tokens.accessToken);
             }),
-            map(() => signUpSuccess()),
+            tap(() => {
+              this.router.navigate(['']);
+            }),
+            map((response) => signUpSuccess({ userData: response.userData })),
             catchError((e) => {
               console.error(e);
               return of(signUpFailed(e));
@@ -42,11 +50,15 @@ export class UserEffects {
       ofType(START_LOGIN),
       exhaustMap((userData) => {
         return this.userApiService.login(userData).pipe(
-          tap(() => {
+          tap((r) => {
+            // console.log(r.tokens);
             this.router.navigate(['']);
           }),
-          map((userResp) => login({ userData: userResp })),
-
+          tap((userData) => {
+            localStorage.setItem('refreshToken', userData.tokens.refreshToken);
+            localStorage.setItem('accessToken', userData.tokens.accessToken);
+          }),
+          map((userResp) => login({ userData: userResp.user })),
           catchError((err) => {
             console.error(err);
             return of(loginFailed({ loginError: err }));
@@ -62,6 +74,24 @@ export class UserEffects {
       // tap(() => console.log('Fetching folders!!!')),
       map(({ userData }) => fetchFolders({ userId: userData.id }))
     )
+  );
+
+  logout$ = createEffect(
+    () =>
+      this.actions$.pipe(
+        ofType(logout),
+        switchMap(() => {
+          const refreshToken = localStorage.getItem('refreshToken');
+          if (refreshToken) return this.userApiService.logout(refreshToken);
+          return EMPTY;
+        }),
+        tap(() => {
+          localStorage.removeItem('refreshToken');
+          localStorage.removeItem('accessToken');
+          this.router.navigate(['/login']);
+        })
+      ),
+    { dispatch: false }
   );
 
   constructor(

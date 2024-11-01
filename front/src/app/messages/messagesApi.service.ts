@@ -99,7 +99,7 @@ export class MessagesApiService {
       .select((state) => state.auth.user?.id)
       .pipe(takeUntilDestroyed())
       .subscribe((uid) => {
-        console.log(uid + ' uid');
+        // console.log(uid + ' uid');
         if (uid) this.userId = uid;
       });
   }

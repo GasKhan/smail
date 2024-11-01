@@ -16,6 +16,7 @@ import { Store } from '@ngrx/store';
 import { changeSearchSubstr } from '../messages/store/messages.actions';
 import { RouterLink } from '@angular/router';
 import { StoreState } from '../store';
+import { logout } from '../auth/store/auth.actions';
 
 @Component({
   selector: 'app-header',
@@ -56,6 +57,7 @@ export class HeaderComponent {
 
   logout() {
     console.log('logging out');
+    this.store.dispatch(logout());
   }
 
   constructor(

@@ -1,7 +1,7 @@
 import { RowDataPacket } from 'mysql2/promise';
 
 export interface User {
-  user_name: string;
+  username: string;
   email: string;
   password: string;
 }

@@ -24,7 +24,7 @@ app.use('/folders', foldersRouter);
 
 app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
   console.error(err.stack);
-  res.status(500).send('Something broke on server side');
+  res.status(401).send('Something broke on server side');
 });
 
 app.listen(port, () => console.log('Listening to port ' + port));

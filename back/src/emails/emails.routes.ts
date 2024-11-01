@@ -7,8 +7,10 @@ import {
   moveEmailToFolder,
   sendEmail,
 } from './emails.controllers';
+import { authenticateToken } from '../middleware/authenticateJWT';
 
 export const router = Router();
+router.use(authenticateToken);
 
 router.post('/', sendEmail);
 
