@@ -9,6 +9,7 @@ import {
   faCheck,
   faEnvelopeCircleCheck,
   faEnvelopeOpen,
+  faEnvelopesBulk,
   faExclamation,
   faMinus,
   faRotateRight,
@@ -19,6 +20,7 @@ import { StoreState } from '../../store';
 import { Store } from '@ngrx/store';
 import {
   selectCheckedMessages,
+  selectReceivedFolderId,
   selectSpamFolderId,
   selectTrashFolderId,
 } from '../store/messages.selectors';
@@ -54,6 +56,7 @@ export class MessageControlComponent {
   faAngleDown = faAngleDown;
   faRotateRight = faRotateRight;
   faCheck = faCheck;
+  faEnvelopesBulk = faEnvelopesBulk;
 
   isCheckDropdownShown = false;
   checkedMessageIds: number[] = [];
@@ -62,6 +65,7 @@ export class MessageControlComponent {
   isEveryCheckedMarked: boolean = false;
   trashFolderId!: number;
   spamFolderId!: number;
+  receivedFolderId!: number;
 
   refreshEmails() {
     this.store.dispatch(fetchMessages({ offset: 0 }));
@@ -118,6 +122,15 @@ export class MessageControlComponent {
     );
   }
 
+  moveCheckedToReceived() {
+    this.store.dispatch(
+      moveToFolder({
+        emailFromFolderIds: [...this.checkedMessageFromFolderIds],
+        folderId: this.receivedFolderId,
+      })
+    );
+  }
+
   deleteCheckedMessages() {
     this.store.dispatch(
       startDeleteMessages({ messageIds: [...this.checkedMessageIds] })
@@ -160,6 +173,13 @@ export class MessageControlComponent {
       .pipe(takeUntilDestroyed())
       .subscribe((id) => {
         this.spamFolderId = id as number;
+      });
+
+    this.store
+      .select(selectReceivedFolderId)
+      .pipe(takeUntilDestroyed())
+      .subscribe((id) => {
+        this.receivedFolderId = id as number;
       });
   }
 }

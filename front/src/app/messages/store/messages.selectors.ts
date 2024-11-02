@@ -37,6 +37,13 @@ export const selectSpamFolderId = createSelector(
       ?.folderId
 );
 
+export const selectReceivedFolderId = createSelector(
+  selectMessagesState,
+  (messages) =>
+    messages.folders.find((folder) => folder.folderName === Folders.Recieved)
+      ?.folderId
+);
+
 export const selectFilteredMessages = createSelector(
   selectMessages,
   selectSearchSubstr,
