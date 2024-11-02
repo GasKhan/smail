@@ -1,4 +1,9 @@
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import {
+  Actions,
+  createEffect,
+  ofType,
+  ROOT_EFFECTS_INIT,
+} from '@ngrx/effects';
 import {
   login,
   loginFailed,
@@ -6,10 +11,19 @@ import {
   signUpFailed,
   signUpSuccess,
   START_LOGIN,
-  LOGIN_SUCCESS,
   logout,
 } from './auth.actions';
-import { catchError, EMPTY, exhaustMap, map, of, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  EMPTY,
+  exhaustMap,
+  filter,
+  map,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
+import { jwtDecode } from 'jwt-decode';
 import { UserApiService } from '../userApi.service';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
@@ -18,6 +32,27 @@ import { fetchFolders } from '../../messages/store/messages.actions';
 
 @Injectable()
 export class UserEffects {
+  init$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ROOT_EFFECTS_INIT),
+      map(() => {
+        const accessToken = localStorage.getItem('accessToken');
+        return accessToken;
+      }),
+      filter((accessToken) => !!accessToken),
+      map((token) => jwtDecode<{ id: number; email: string }>(token as string)),
+      // tap((r) => console.log(r.id, r.email)),
+      map((decodedToken) => {
+        return login({
+          userData: {
+            id: decodedToken.id,
+            email: decodedToken.email,
+          },
+        });
+      })
+    )
+  );
+
   signUp$ = createEffect(
     () =>
       this.actions$.pipe(

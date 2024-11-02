@@ -6,5 +6,5 @@ export type UserLogin = {
 export type UserResp = {
   id: number;
   email: string;
-  username: string;
+  username?: string;
 };
