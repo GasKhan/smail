@@ -8,4 +8,11 @@
   </div>
 </div>
 
-<app-send-message [ngClass]="{ hidden: !isSendMessageOpen }"></app-send-message>
+@if ((toggleSendMessageService.currentIsOpened | async)?.isOpened) {
+
+<app-send-message
+  [sendTo]="(toggleSendMessageService.currentIsOpened | async)?.sendTo!"
+  [title]="(toggleSendMessageService.currentIsOpened | async)?.title!"
+  [body]="(toggleSendMessageService.currentIsOpened | async)?.body!"
+></app-send-message>
+}

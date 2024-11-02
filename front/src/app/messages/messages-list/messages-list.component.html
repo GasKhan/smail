@@ -1,6 +1,6 @@
 <app-message-control></app-message-control>
 <div class="" appScrollAtEnd (scrollAtEnd)="onScrollAtEnd()">
-  @for ( message of messages | async; track message) {
+  @for ( message of messages$ | async; track message) {
   <app-messages-list-item
     [message]="message"
     [isInTrash]="trashFolderId === message.folderId"

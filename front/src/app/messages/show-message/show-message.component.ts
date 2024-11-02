@@ -11,6 +11,8 @@ import { AsyncPipe } from '@angular/common';
 import { Observable } from 'rxjs';
 import { changeIsMessageWatched } from '../store/messages.actions';
 import { getFormattedDate } from '../../../helpers/getFormattedDate';
+import { SendMessageToggleService } from '../../sendMessage-toggle.service';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-show-message',
@@ -24,33 +26,63 @@ export class ShowMessageComponent {
   faStar = faStar;
   faReply = faReply;
   faReplyAll = faReplyAll;
-  message$!: Observable<Message | undefined>;
+  // message$!: Observable<Message | undefined>;
+  message!: Message;
 
   getFormattedDate = getFormattedDate;
 
+  openSendMessage(sendTo?: string, title?: string, body?: string) {
+    this.toggleSendMessageService.openSendMessage(sendTo, title, body);
+  }
+
   constructor(
     private activatedRoute: ActivatedRoute,
-    private store: Store<StoreState>
+    private store: Store<StoreState>,
+    private toggleSendMessageService: SendMessageToggleService
   ) {
-    this.message$ = activatedRoute.params.pipe(
-      switchMap((params) => {
-        const id = +params['id'];
-        return this.store.select((state) =>
-          state.messages.messages.find((mes) => {
-            return mes.emailId === id;
-          })
-        );
-      }),
-      tap((message) => {
-        // console.log('dispatching change wathced');
-        if (message && !message.isWatched)
-          this.store.dispatch(
-            changeIsMessageWatched({
-              messageIds: [message.emailId],
-              changeIsWatchedTo: true,
+    // this.message$ = activatedRoute.params.pipe(
+    //   switchMap((params) => {
+    //     const id = +params['id'];
+    //     return this.store.select((state) =>
+    //       state.messages.messages.find((mes) => {
+    //         return mes.emailId === id;
+    //       })
+    //     );
+    //   }),
+    //   tap((message) => {
+    //     // console.log('dispatching change wathced');
+    //     if (message && !message.isWatched)
+    //       this.store.dispatch(
+    //         changeIsMessageWatched({
+    //           messageIds: [message.emailId],
+    //           changeIsWatchedTo: true,
+    //         })
+    //       );
+    //   })
+    // );
+    activatedRoute.params
+      .pipe(
+        takeUntilDestroyed(),
+        switchMap((params) => {
+          const id = +params['id'];
+          return this.store.select((state) =>
+            state.messages.messages.find((mes) => {
+              return mes.emailId === id;
             })
           );
-      })
-    );
+        }),
+        tap((message) => {
+          if (message && !message.isWatched)
+            this.store.dispatch(
+              changeIsMessageWatched({
+                messageIds: [message.emailId],
+                changeIsWatchedTo: true,
+              })
+            );
+        })
+      )
+      .subscribe((message) => {
+        if (message) this.message = message;
+      });
   }
 }

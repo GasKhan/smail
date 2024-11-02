@@ -18,6 +18,7 @@ import {
   uncheckAllMessages,
 } from './messages.actions';
 import { Folders } from '../../models/folder-names';
+import { logout } from '../../auth/store/auth.actions';
 
 export type MessagesState = {
   folders: Folder[];
@@ -129,5 +130,15 @@ export const messagesReducer = createReducer(
   on(changeSearchSubstr, (state, { newSearchSubstr }) => ({
     ...state,
     searchSubstr: newSearchSubstr,
-  }))
+  })),
+  on(logout, (state) => {
+    return {
+      ...state,
+      folders: [],
+      messages: [],
+      selectedFolderId: null,
+      currentFolderPage: 1,
+      searchSubstr: '',
+    };
+  })
 );

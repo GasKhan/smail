@@ -35,16 +35,16 @@ import { MessageControlComponent } from './messages/message-control/message-cont
   styleUrl: './app.component.css',
 })
 export class AppComponent {
-  isSendMessageOpen!: boolean;
+  // isSendMessageOpen!: boolean;
 
   constructor(
     private store: Store,
-    private toggleSendMessageService: SendMessageToggleService
+    public toggleSendMessageService: SendMessageToggleService
   ) {
-    this.toggleSendMessageService.currentIsOpened
-      .pipe(takeUntilDestroyed())
-      .subscribe((isOpen) => {
-        this.isSendMessageOpen = isOpen;
-      });
+    // this.toggleSendMessageService.currentIsOpened
+    //   .pipe(takeUntilDestroyed())
+    //   .subscribe((isOpen) => {
+    //     this.isSendMessageOpen = isOpen;
+    //   });
   }
 }

@@ -19,6 +19,7 @@ import { AsyncPipe, NgClass } from '@angular/common';
 import {
   selectCheckedMessages,
   selectFilteredMessages,
+  selectMessages,
   selectSpamFolderId,
   selectTrashFolderId,
 } from '../store/messages.selectors';
@@ -36,7 +37,7 @@ import {
 import { Message } from '../../models/message.model';
 import { MessageControlComponent } from '../message-control/message-control.component';
 import { ScrollAtEndDirective } from './scroll-at-end.directive';
-import { fromEvent } from 'rxjs';
+import { fromEvent, take } from 'rxjs';
 
 @Component({
   selector: 'app-messages-list',
@@ -55,10 +56,10 @@ import { fromEvent } from 'rxjs';
 })
 export class MessagesListComponent {
   trashFolderId!: number;
-  loadedMessagesOffset = 0;
+  loadedMessagesOffset!: number;
   limit = 10;
 
-  messages = this.store.select(selectFilteredMessages);
+  messages$ = this.store.select(selectFilteredMessages);
 
   moveToTrashFolder(message: Message) {
     this.store.dispatch(
@@ -100,7 +101,7 @@ export class MessagesListComponent {
     this.store.dispatch(
       fetchMessages({ offset: this.loadedMessagesOffset, limit: this.limit })
     );
-    this.loadedMessagesOffset += this.limit;
+    // this.loadedMessagesOffset += this.limit;
   }
 
   constructor(private store: Store<StoreState>) {
@@ -109,6 +110,13 @@ export class MessagesListComponent {
       .pipe(takeUntilDestroyed())
       .subscribe((id) => {
         this.trashFolderId = id as number;
+      });
+
+    this.store
+      .select(selectMessages)
+      .pipe(takeUntilDestroyed())
+      .subscribe((messages) => {
+        this.loadedMessagesOffset = messages.length;
       });
   }
 }
