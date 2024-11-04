@@ -10,11 +10,11 @@ import {
   IconDefinition,
 } from '@fortawesome/free-solid-svg-icons';
 import { Store } from '@ngrx/store';
-import { StoreState } from '../store';
+import { StoreState } from '../../store';
 import { AsyncPipe } from '@angular/common';
-import { SendMessageToggleService } from '../sendMessage-toggle.service';
-import { selectFolder } from '../messages/store/messages.actions';
-import { Folders } from '../models/folder-names';
+import { SendMessageToggleService } from '../../sendMessage-toggle.service';
+import { selectFolder } from '../../messages/store/messages.actions';
+import { Folders } from '../../models/folder-names';
 
 @Component({
   selector: 'app-aside-nav',

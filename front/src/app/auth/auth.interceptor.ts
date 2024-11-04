@@ -35,7 +35,15 @@ export const authInterceptor = (
             tap(({ accessToken }) => {
               localStorage.setItem('accessToken', accessToken);
             }),
-            switchMap(() => next(reqWithAccessToken))
+            switchMap(({ accessToken }) => {
+              const newReqWithAccessToken = req.clone({
+                headers: reqWithAccessToken.headers.set(
+                  'authorization',
+                  `Bearer ${accessToken}`
+                ),
+              });
+              return next(newReqWithAccessToken);
+            })
           );
         }
         return throwError(error);

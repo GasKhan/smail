@@ -56,7 +56,6 @@ export class HeaderComponent {
   }
 
   logout() {
-    console.log('logging out');
     this.store.dispatch(logout());
   }
 

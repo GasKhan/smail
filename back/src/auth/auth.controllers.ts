@@ -63,9 +63,9 @@ export const refreshAccessToken = async (req: Request, res: Response) => {
         const data = userData as JwtPayload;
         const user = {
           email: data.email,
-          id: data.user_id,
-          username: data.username,
+          id: data.id,
         };
+
         const { accessToken } = generateTokens(user);
         res.status(200).json({ accessToken });
       }

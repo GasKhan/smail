@@ -40,26 +40,6 @@ export class ShowMessageComponent {
     private store: Store<StoreState>,
     private toggleSendMessageService: SendMessageToggleService
   ) {
-    // this.message$ = activatedRoute.params.pipe(
-    //   switchMap((params) => {
-    //     const id = +params['id'];
-    //     return this.store.select((state) =>
-    //       state.messages.messages.find((mes) => {
-    //         return mes.emailId === id;
-    //       })
-    //     );
-    //   }),
-    //   tap((message) => {
-    //     // console.log('dispatching change wathced');
-    //     if (message && !message.isWatched)
-    //       this.store.dispatch(
-    //         changeIsMessageWatched({
-    //           messageIds: [message.emailId],
-    //           changeIsWatchedTo: true,
-    //         })
-    //       );
-    //   })
-    // );
     activatedRoute.params
       .pipe(
         takeUntilDestroyed(),

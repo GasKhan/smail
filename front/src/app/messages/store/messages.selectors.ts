@@ -59,6 +59,17 @@ export const selectFilteredMessages = createSelector(
   }
 );
 
+export const selectSelectedFolderName = createSelector(
+  selectMessagesState,
+  (messagesState) => {
+    const selectedFolderId = messagesState.selectedFolderId;
+    const selectedFolder = messagesState.folders.find(
+      (folder) => folder.folderId === selectedFolderId
+    );
+    return selectedFolder?.folderName;
+  }
+);
+
 export const selectCheckedMessages = createSelector(
   selectMessages,
   (messages) => messages.filter((m) => m.isChecked === true)

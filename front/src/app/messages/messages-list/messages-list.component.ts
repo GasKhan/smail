@@ -1,26 +1,14 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MessagesListItemComponent } from './messages-list-item/messages-list-item.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
-import {
-  faAngleDown,
-  faArrowLeft,
-  faArrowRight,
-  faEnvelopeCircleCheck,
-  faEnvelopeOpen,
-  faExclamation,
-  faFolderOpen,
-  faRotateRight,
-  faStar,
-  faTrashCan,
-} from '@fortawesome/free-solid-svg-icons';
+
 import { Store } from '@ngrx/store';
 import { StoreState } from '../../store';
 import { AsyncPipe, NgClass } from '@angular/common';
 import {
-  selectCheckedMessages,
   selectFilteredMessages,
   selectMessages,
-  selectSpamFolderId,
+  selectSelectedFolderName,
   selectTrashFolderId,
 } from '../store/messages.selectors';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -28,16 +16,14 @@ import {
   changeIsMessageChecked,
   changeIsMessageMarked,
   changeIsMessageWatched,
-  checkAllMessages,
-  checkMessagesByField,
   fetchMessages,
   moveToFolder,
-  uncheckAllMessages,
 } from '../store/messages.actions';
 import { Message } from '../../models/message.model';
 import { MessageControlComponent } from '../message-control/message-control.component';
 import { ScrollAtEndDirective } from './scroll-at-end.directive';
-import { fromEvent, take } from 'rxjs';
+import { Folders } from '../../models/folder-names';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-messages-list',
@@ -56,6 +42,7 @@ import { fromEvent, take } from 'rxjs';
 })
 export class MessagesListComponent {
   trashFolderId!: number;
+  selectedFolderName!: Folders;
   loadedMessagesOffset!: number;
   limit = 10;
 
@@ -71,6 +58,7 @@ export class MessagesListComponent {
   }
 
   flagEmailAsWatched(emailId: number, isWatchedTo: boolean) {
+    if (this.selectedFolderName === Folders.Sent) return;
     this.store.dispatch(
       changeIsMessageWatched({
         messageIds: [emailId],
@@ -117,6 +105,13 @@ export class MessagesListComponent {
       .pipe(takeUntilDestroyed())
       .subscribe((messages) => {
         this.loadedMessagesOffset = messages.length;
+      });
+
+    this.store
+      .select(selectSelectedFolderName)
+      .pipe(takeUntilDestroyed())
+      .subscribe((selectedFolderName) => {
+        if (selectedFolderName) this.selectedFolderName = selectedFolderName;
       });
   }
 }

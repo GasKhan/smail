@@ -67,7 +67,7 @@ export class UserEffects {
               localStorage.setItem('accessToken', userData.tokens.accessToken);
             }),
             tap(() => {
-              this.router.navigate(['']);
+              this.router.navigate(['/messages']);
             }),
             map((response) => signUpSuccess({ userData: response.userData })),
             catchError((e) => {
@@ -87,7 +87,7 @@ export class UserEffects {
         return this.userApiService.login(userData).pipe(
           tap((r) => {
             // console.log(r.tokens);
-            this.router.navigate(['']);
+            this.router.navigate(['/messages']);
           }),
           tap((userData) => {
             localStorage.setItem('refreshToken', userData.tokens.refreshToken);

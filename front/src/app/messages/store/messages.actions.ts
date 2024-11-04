@@ -7,6 +7,7 @@ export const SET_FOLDERS = '[Messages] Set Folders';
 export const SELECT_FOLDER = '[Messages] Select Folder';
 export const MOVE_TO_FOLDER = '[Messages] Move To Folder';
 export const FETCH_MESSAGES = '[Messages] Fetch Messages';
+export const REFRESH_MESSAGES = '[Messages] Refresh Messages';
 export const SET_MESSAGES = '[Messages] Set Messages';
 export const ADD_MESSAGES = '[Messages] Add Messages';
 export const START_SEND_MESSAGE = '[Messages] Start Send Message';
@@ -45,6 +46,11 @@ export const moveToFolder = createAction(
 
 export const fetchMessages = createAction(
   FETCH_MESSAGES,
+  props<{ offset: number; limit?: number }>()
+);
+
+export const refreshMessages = createAction(
+  REFRESH_MESSAGES,
   props<{ offset: number; limit?: number }>()
 );
 

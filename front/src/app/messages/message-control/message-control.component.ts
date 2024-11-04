@@ -11,7 +11,6 @@ import {
   faEnvelopeOpen,
   faEnvelopesBulk,
   faExclamation,
-  faMinus,
   faRotateRight,
   faStar,
   faTrashCan,
@@ -21,6 +20,7 @@ import { Store } from '@ngrx/store';
 import {
   selectCheckedMessages,
   selectReceivedFolderId,
+  selectSelectedFolderName,
   selectSpamFolderId,
   selectTrashFolderId,
 } from '../store/messages.selectors';
@@ -30,14 +30,14 @@ import {
   changeIsMessageWatched,
   checkAllMessages,
   checkMessagesByField,
-  fetchMessages,
+  refreshMessages,
   moveToFolder,
   startDeleteMessages,
   uncheckAllMessages,
 } from '../store/messages.actions';
 import { NgClass } from '@angular/common';
 import { Message } from '../../models/message.model';
-import { tap } from 'rxjs';
+import { Folders } from '../../models/folder-names';
 
 @Component({
   selector: 'app-message-control',
@@ -66,9 +66,11 @@ export class MessageControlComponent {
   trashFolderId!: number;
   spamFolderId!: number;
   receivedFolderId!: number;
+  selectedFolderName!: Folders;
+  Folders = Folders;
 
   refreshEmails() {
-    this.store.dispatch(fetchMessages({ offset: 0 }));
+    this.store.dispatch(refreshMessages({ offset: 0 }));
   }
 
   toggleCheckDropdown() {
@@ -180,6 +182,15 @@ export class MessageControlComponent {
       .pipe(takeUntilDestroyed())
       .subscribe((id) => {
         this.receivedFolderId = id as number;
+      });
+
+    this.store
+      .select(selectSelectedFolderName)
+      .pipe(takeUntilDestroyed())
+      .subscribe((selectedFolderName) => {
+        if (selectedFolderName) {
+          this.selectedFolderName = selectedFolderName;
+        }
       });
   }
 }

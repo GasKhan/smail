@@ -50,7 +50,7 @@ export class LoginComponent implements OnInit {
   }
 
   closeLoginPage() {
-    this.router.navigate(['/']);
+    this.router.navigate(['/login']);
   }
 
   constructor(

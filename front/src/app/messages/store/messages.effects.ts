@@ -9,6 +9,7 @@ import {
   FETCH_FOLDERS,
   fetchMessages,
   moveToFolder,
+  refreshMessages,
   selectFolder,
   sendMessage,
   sendMessageError,
@@ -109,18 +110,18 @@ export class MessagesEffects {
 
   selectFolder$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(selectFolder),
+      ofType(selectFolder, refreshMessages),
       switchMap(() => {
         return this.store.select(getSelectedFolderId).pipe(
           take(1),
           map((folderId) => folderId as number)
         );
       }),
-      // tap((t) => console.log(t)),
       switchMap((folderId) => {
         return this.messagesApiService
           .fetchMessagesFromFolder({ folderId }, 0)
           .pipe(
+            // tap((t) => console.log(t)),
             map((messages) => {
               const messagesWithIsCheckedAdded = messages.map((m) => ({
                 ...m,

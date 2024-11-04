@@ -24,7 +24,6 @@ export type MessagesState = {
   folders: Folder[];
   selectedFolderId: number | null;
   messages: Message[];
-  currentFolderPage: number;
   searchSubstr: string;
 };
 
@@ -32,7 +31,6 @@ const initialState: MessagesState = {
   folders: [],
   messages: [],
   selectedFolderId: null,
-  currentFolderPage: 1,
   searchSubstr: '',
 };
 

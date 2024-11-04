@@ -1,8 +1,8 @@
 <div
-  class="group flex w-full p-5 items-center hover:shadow-[inset_0_-2px_0_0_rgba(100,121,143,0.12)] cursor-pointer ease-in duration-100 bg-slate-50 border-t-2 rounded-sm dark:bg-slate-800"
+  class="group flex w-full p-5 items-center hover:shadow-[inset_0_-2px_0_0_rgba(100,121,143,0.12)] cursor-pointer ease-in duration-100 bg-slate-50 border-t-2 rounded-sm dark:bg-slate-500"
   [ngClass]="{
     'bg-slate-500': message.isWatched,
-    'dark:bg-slate-500': message.isWatched,
+    'dark:bg-slate-900': message.isWatched,
     'bg-blue-500': message.isChecked
   }"
 >
@@ -37,7 +37,7 @@
 
   <div class="min-w-0 flex items-center max-w-fit mr-7 basis-1/2 grow">
     <a
-      [routerLink]="['/message', message.emailId]"
+      [routerLink]="['/messages/message', message.emailId]"
       routerLinkActive="router-link-active"
       class="w-full flex items-center"
     >
@@ -47,7 +47,7 @@
       >
       <span class="mx-2">-</span>
       <span class="overflow-hidden text-ellipsis whitespace-nowrap">
-        {{ message.textBody }}
+        {{ messageText }}
       </span>
     </a>
   </div>
@@ -57,6 +57,7 @@
     >
   </div>
   <div class="hidden group-hover:block ml-auto">
+    @if (selectedFolderName !== Folders.TrashFolder) {
     <button
       class="mx-1 rounded-full hover:bg-slate-300 dark:hover:bg-slate-600 w-6 h-6 disabled:bg-transparent disabled:text-gray-300"
       (click)="moveToTrash()"
@@ -64,6 +65,7 @@
     >
       <fa-icon [icon]="faTrash" class=""></fa-icon>
     </button>
+    }
     <button
       class="mx-1 rounded-full hover:bg-slate-300 dark:hover:bg-slate-600 w-6 h-6"
       (click)="flagAsWatched()"
