@@ -40,29 +40,46 @@ export class ShowMessageComponent {
     private store: Store<StoreState>,
     private toggleSendMessageService: SendMessageToggleService
   ) {
-    activatedRoute.params
+    // activatedRoute.params
+    //   .pipe(
+    //     takeUntilDestroyed(),
+    //     switchMap((params) => {
+    //       const id = +params['id'];
+    //       return this.store.select((state) =>
+    //         state.messages.messages.find((mes) => {
+    //           return mes.emailId === id;
+    //         })
+    //       );
+    //     }),
+    //     tap((message) => {
+    //       if (message && !message.isWatched)
+    //         this.store.dispatch(
+    //           changeIsMessageWatched({
+    //             messageIds: [message.emailId],
+    //             changeIsWatchedTo: true,
+    //           })
+    //         );
+    //     })
+    //   )
+    //   .subscribe((message) => {
+    //     if (message) this.message = message;
+    //   });
+
+    this.activatedRoute.data
       .pipe(
         takeUntilDestroyed(),
-        switchMap((params) => {
-          const id = +params['id'];
-          return this.store.select((state) =>
-            state.messages.messages.find((mes) => {
-              return mes.emailId === id;
-            })
-          );
-        }),
         tap((message) => {
-          if (message && !message.isWatched)
+          if (message && !message['isWatched'])
             this.store.dispatch(
               changeIsMessageWatched({
-                messageIds: [message.emailId],
+                messageIds: [message['emailId']],
                 changeIsWatchedTo: true,
               })
             );
         })
       )
-      .subscribe((message) => {
-        if (message) this.message = message;
+      .subscribe(({ message }) => {
+        this.message = message[0];
       });
   }
 }

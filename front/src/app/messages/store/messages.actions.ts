@@ -46,7 +46,7 @@ export const moveToFolder = createAction(
 
 export const fetchMessages = createAction(
   FETCH_MESSAGES,
-  props<{ offset: number; limit?: number }>()
+  props<{ offset: number; limit?: number; folderId: number }>()
 );
 
 export const refreshMessages = createAction(

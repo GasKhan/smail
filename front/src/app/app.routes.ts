@@ -6,21 +6,46 @@ import { LoginComponent } from './auth/login/login.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { authGuard } from './auth/auth.guard';
 import { MessagesComponent } from './messages/messages.component';
+import { folderResolver } from './messages/aside-nav/folder.resolver';
+import { showMessageResolver } from './messages/show-message/show-message.resolver';
 
 export const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
   {
     path: 'messages',
-    component: MessagesComponent,
+    loadComponent: () =>
+      import('./messages/messages.component').then((m) => m.MessagesComponent),
     canActivate: [authGuard],
     canActivateChild: [authGuard],
     children: [
-      { path: 'recieved', component: MessagesListComponent },
-      { path: 'sent', component: MessagesListComponent },
-      { path: 'spam', component: MessagesListComponent },
-      { path: 'trashfolder', component: MessagesListComponent },
-      { path: 'message/:id', component: ShowMessageComponent },
+      {
+        path: 'recieved',
+        component: MessagesListComponent,
+        resolve: { folderId: folderResolver },
+      },
+      {
+        path: 'sent',
+        component: MessagesListComponent,
+        resolve: { folderId: folderResolver },
+      },
+      {
+        path: 'spam',
+        component: MessagesListComponent,
+        resolve: { folderId: folderResolver },
+      },
+      {
+        path: 'trashfolder',
+        component: MessagesListComponent,
+        resolve: { folderId: folderResolver },
+      },
+      {
+        path: 'message/:id',
+        component: ShowMessageComponent,
+        resolve: {
+          message: showMessageResolver,
+        },
+      },
       { path: '', redirectTo: 'messages/recieved', pathMatch: 'full' },
     ],
   },

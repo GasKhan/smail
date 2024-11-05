@@ -23,6 +23,7 @@ import { Message } from '../../models/message.model';
 import { MessageControlComponent } from '../message-control/message-control.component';
 import { ScrollAtEndDirective } from './scroll-at-end.directive';
 import { Folders } from '../../models/folder-names';
+import { ActivatedRoute } from '@angular/router';
 import { tap } from 'rxjs';
 
 @Component({
@@ -42,6 +43,7 @@ import { tap } from 'rxjs';
 })
 export class MessagesListComponent {
   trashFolderId!: number;
+  folderId!: number;
   selectedFolderName!: Folders;
   loadedMessagesOffset!: number;
   limit = 10;
@@ -87,12 +89,24 @@ export class MessagesListComponent {
 
   onScrollAtEnd() {
     this.store.dispatch(
-      fetchMessages({ offset: this.loadedMessagesOffset, limit: this.limit })
+      fetchMessages({
+        offset: this.loadedMessagesOffset,
+        limit: this.limit,
+        folderId: this.folderId,
+      })
     );
-    // this.loadedMessagesOffset += this.limit;
   }
 
-  constructor(private store: Store<StoreState>) {
+  constructor(
+    private store: Store<StoreState>,
+    private activatedRoute: ActivatedRoute
+  ) {
+    this.activatedRoute.data
+      .pipe(takeUntilDestroyed())
+      .subscribe(({ folderId }) => {
+        this.folderId = folderId;
+      });
+
     this.store
       .select(selectTrashFolderId)
       .pipe(takeUntilDestroyed())

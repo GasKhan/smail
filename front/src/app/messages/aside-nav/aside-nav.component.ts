@@ -41,10 +41,6 @@ export class AsideNavComponent {
     this.toggleSendMessageService.openSendMessage();
   }
 
-  goToFolder(folderId: number) {
-    this.store.dispatch(selectFolder({ selectedFolderId: folderId }));
-  }
-
   constructor(
     private store: Store<StoreState>,
     private toggleSendMessageService: SendMessageToggleService

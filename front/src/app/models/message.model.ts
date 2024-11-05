@@ -13,5 +13,5 @@ export interface Message extends MessageToSend {
   isMarked: boolean;
   folderId: number;
   emailFromFolderId: number;
-  isChecked: boolean;
+  isChecked?: boolean;
 }

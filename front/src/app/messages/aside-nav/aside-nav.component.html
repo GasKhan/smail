@@ -15,7 +15,6 @@
         class="flex w-full h-full py-3 pr-4 pl-10 text-md rounded-e-3xl hover:bg-slate-200 dark:hover:bg-slate-400"
         routerLinkActive="bg-slate-500 hover:bg-slate-600 font-semibold"
         [routerLink]="[folder.folderName.toLowerCase()]"
-        (click)="goToFolder(folder.folderId)"
       >
         <fa-icon [icon]="folderIcons[folder.folderName]" class="mr-3"></fa-icon>
         <span class="mr-auto">{{ folder.folderName }}</span>

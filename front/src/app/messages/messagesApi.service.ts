@@ -6,7 +6,7 @@ import { map } from 'rxjs/internal/operators/map';
 import { getBooleanFromTinyInt } from '../../helpers/getBooleanFromTinyInt';
 import { Store } from '@ngrx/store';
 import { StoreState } from '../store';
-import { take } from 'rxjs';
+import { take, tap } from 'rxjs';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 type MessageFromDB = {
@@ -22,6 +22,12 @@ type MessageFromDB = {
   folderId: number;
   emailFromFolderId: number;
 };
+
+interface MessageWithBooleanFlags
+  extends Omit<MessageFromDB, 'isWatched' | 'isMarked'> {
+  isWatched: boolean;
+  isMarked: boolean;
+}
 
 @Injectable({ providedIn: 'root' })
 export class MessagesApiService {
@@ -46,10 +52,20 @@ export class MessagesApiService {
         map((messages) =>
           messages.map((message) => ({
             ...message,
-            isWatched: getBooleanFromTinyInt(message.isWatched),
             isMarked: getBooleanFromTinyInt(message.isMarked),
+            isWatched: getBooleanFromTinyInt(message.isWatched),
           }))
         )
+      );
+  }
+
+  fetchMessage(messageId: number) {
+    return this.http
+      .get<MessageFromDB>('http://localhost:3000/messages/email', {
+        params: { messageId },
+      })
+      .pipe(
+        map((message) => this.convertNumberValuesToBooleanInMessage(message))
       );
   }
 
@@ -92,6 +108,15 @@ export class MessagesApiService {
         emailIds: emailIds,
       },
     });
+  }
+
+  private convertNumberValuesToBooleanInMessage(
+    message: MessageFromDB
+  ): MessageWithBooleanFlags {
+    const editedMessage: any = { ...message };
+    editedMessage[0].isWatched = getBooleanFromTinyInt(editedMessage.isWatched);
+    editedMessage[0].isMarked = getBooleanFromTinyInt(editedMessage.isMarked);
+    return editedMessage;
   }
 
   constructor(private http: HttpClient, private store: Store<StoreState>) {

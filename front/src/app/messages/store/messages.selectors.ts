@@ -70,6 +70,13 @@ export const selectSelectedFolderName = createSelector(
   }
 );
 
+export const selectFolderFromRoute = (folderName: string) =>
+  createSelector(selectMessagesState, (messagesState) =>
+    messagesState.folders.find((folder) => {
+      return folder.folderName.toLowerCase() === folderName?.toLowerCase();
+    })
+  );
+
 export const selectCheckedMessages = createSelector(
   selectMessages,
   (messages) => messages.filter((m) => m.isChecked === true)

@@ -7,6 +7,7 @@ import {
   changeIsMessageWatched,
   deleteMessagesSuccess,
   FETCH_FOLDERS,
+  fetchFolders,
   fetchMessages,
   moveToFolder,
   refreshMessages,
@@ -41,7 +42,7 @@ import {
 export class MessagesEffects {
   fetchFolders$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(FETCH_FOLDERS),
+      ofType(fetchFolders),
       exhaustMap(({ userId }) => {
         return this.messagesApiService.fetchFolders(userId).pipe(
           map((folders) => setFolders({ folders })),
@@ -55,42 +56,29 @@ export class MessagesEffects {
     )
   );
 
-  startingSelectFolder$ = createEffect(() =>
-    this.actions$.pipe(
-      ofType(setFolders),
-      switchMap(() => {
-        return this.store.select(selectRecievedFolder).pipe(
-          take(1),
-          map((folder) => folder?.folderId)
-        );
-        // tap((t) => console.log(t)),
-      }),
-      map((recievedFolderId) =>
-        selectFolder({ selectedFolderId: recievedFolderId as number })
-      )
-    )
-  );
+  // startingSelectFolder$ = createEffect(() =>
+  //   this.actions$.pipe(
+  //     ofType(setFolders),
+  //     switchMap(() => {
+  //       return this.store.select(selectRecievedFolder).pipe(
+  //         take(1),
+  //         map((folder) => folder?.folderId)
+  //       );
+  //       // tap((t) => console.log(t)),
+  //     }),
+  //     map((recievedFolderId) =>
+  //       selectFolder({ selectedFolderId: recievedFolderId as number })
+  //     )
+  //   )
+  // );
 
   fetchMessages$ = createEffect(() =>
     this.actions$.pipe(
       ofType(fetchMessages),
-      switchMap((offsetData) => {
-        return combineLatest([
-          of(offsetData),
-          this.store.select(getSelectedFolderId).pipe(
-            take(1),
-            map((folderId) => folderId as number)
-          ),
-        ]);
-      }),
       // tap((t) => console.log(t)),
-      switchMap(([offsetData, folderId]) => {
+      switchMap(({ offset, folderId, limit }) => {
         return this.messagesApiService
-          .fetchMessagesFromFolder(
-            { folderId },
-            offsetData.offset,
-            offsetData.limit
-          )
+          .fetchMessagesFromFolder({ folderId }, offset, limit)
           .pipe(
             map((messages) => {
               const messagesWithIsCheckedAdded = messages.map((m) => ({
@@ -110,16 +98,10 @@ export class MessagesEffects {
 
   selectFolder$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(selectFolder, refreshMessages),
-      switchMap(() => {
-        return this.store.select(getSelectedFolderId).pipe(
-          take(1),
-          map((folderId) => folderId as number)
-        );
-      }),
+      ofType(selectFolder),
       switchMap((folderId) => {
         return this.messagesApiService
-          .fetchMessagesFromFolder({ folderId }, 0)
+          .fetchMessagesFromFolder({ folderId: folderId.selectedFolderId }, 0)
           .pipe(
             // tap((t) => console.log(t)),
             map((messages) => {
