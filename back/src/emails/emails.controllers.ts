@@ -4,6 +4,7 @@ import {
   changeIsWatchedFlag,
   deleteEmailsService,
   getEmailsService,
+  getOneEmailService,
   moveEmailToOtherFolder,
   sendEmailService,
 } from './emails.services';
@@ -45,6 +46,20 @@ export const getEmailsFromFolder = async (req: Request, res: Response) => {
   } catch (e) {
     console.error(e);
     res.status(400).send({ message: 'Couldnt get messages' });
+  }
+};
+
+export const getOneEmail = async (req: Request, res: Response) => {
+  const { messageId: emailId } = req.query;
+
+  try {
+    if (emailId) {
+      const email = await getOneEmailService(+emailId);
+      res.status(200).json(email);
+    } else throw new Error('Email id was not provided');
+  } catch (err: any) {
+    console.log(err);
+    res.status(400).send(err.message);
   }
 };
 

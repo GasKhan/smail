@@ -87,6 +87,21 @@ export const getEmailsService = async (
   return res[0];
 };
 
+export const getOneEmailService = async (emailId: number) => {
+  const res = await pool.query(
+    `
+    SELECT e.email_id AS emailId, title, e.text_body AS textBody, e.sender_id AS senderId, e.sent_at AS sentAt,
+    e.is_watched AS isWatched, e.is_marked AS isMarked, u.user_name as senderName
+    FROM emails AS e
+    INNER JOIN users AS u
+    ON u.user_id = e.sender_id
+    WHERE e.email_id = ?;
+    `,
+    [emailId]
+  );
+  return res[0];
+};
+
 export const moveEmailToOtherFolder = async (
   folderId: number,
   messageFromFolderIds: number[]
@@ -137,3 +152,12 @@ export const changeIsMarkedFlag = async (
 // UPDATE emails
 // SET is_watched = true
 // WHERE email_id = 21;
+
+// SELECT e.email_id AS emailId, title, e.text_body AS textBody, e.sender_id AS senderId, e.sent_at AS sentAt,
+// e.is_watched AS isWatched, e.is_marked AS isMarked, u.user_name as senderName,e_f.folder_id AS folderId, e_f.email_folder_id AS emailFromFolderId
+// FROM emails AS e
+// INNER JOIN users AS u
+// ON u.user_id = e.sender_id
+// INNER JOIN emails_folders AS e_f
+// ON e.email_id = e_f.email_id
+// WHERE e.email_id = ?

@@ -4,6 +4,7 @@ import {
   flagAsMarked,
   flagAsWatched,
   getEmailsFromFolder,
+  getOneEmail,
   moveEmailToFolder,
   sendEmail,
 } from './emails.controllers';
@@ -17,6 +18,8 @@ router.post('/', sendEmail);
 router.get('/', getEmailsFromFolder);
 
 router.delete('/', deleteEmails);
+
+router.get('/email', getOneEmail);
 
 router.patch('/toFolder', moveEmailToFolder);
 
