@@ -12,7 +12,8 @@ export const showMessageResolver: ResolveFn<Observable<Message>> = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ) => {
+  const messageId = route.params['id'];
   const messagesApiService = inject(MessagesApiService);
 
-  return messagesApiService.fetchMessage(65);
+  return messagesApiService.fetchMessage(messageId);
 };

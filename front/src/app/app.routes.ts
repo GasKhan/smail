@@ -10,6 +10,7 @@ import { folderResolver } from './messages/aside-nav/folder.resolver';
 import { showMessageResolver } from './messages/show-message/show-message.resolver';
 
 export const routes: Routes = [
+  { path: '', pathMatch: 'full', redirectTo: 'login' },
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
   {
